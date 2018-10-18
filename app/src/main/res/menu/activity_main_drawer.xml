@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_camera"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="Create a note" />
+        <item
+            android:id="@+id/nav_gallery"
+            android:icon="@drawable/ic_menu_gallery"
+            android:title="Edit your tags" />
+        <item
+            android:id="@+id/nav_manage"
+            android:icon="@drawable/ic_settings"
+            android:title="Settings" />
+    </group>
+
+    <item android:title="Our Societies!">
+        <menu>
+            <item
+                android:id="@+id/codpeice"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Codpeice" />
+            <item
+                android:id="@+id/freshblood"
+                android:icon="@drawable/ic_launcher_background"
+                android:title="Freshblood" />
+            <item
+                android:id="@+id/mtw"
+                android:icon="@drawable/ic_launcher_foreground"
+                android:title="Musical Theatre Warwick" />
+            <item
+                android:id="@+id/opwa"
+                android:icon="@drawable/ic_menu_camera"
+                android:title="Opera Warwick" />
+            <item
+                android:id="@+id/shakesoc"
+                android:icon="@drawable/ic_menu_gallery"
+                android:title="ShakeSoc" />
+            <item
+                android:id="@+id/tec"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="Tech Crew" />
+            <item
+                android:id="@+id/wits"
+                android:icon="@drawable/ic_menu_slideshow"
+                android:title="Warwick Improvised Theatre Society" />
+            <item
+                android:id="@+id/wuds"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Warwick University Drama Society" />
+        </menu>
+    </item>
+
+    <item android:title="Advanced">
+        <menu>
+            <item
+                android:id="@+id/adminSet"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="Administrator Settings"
+            />
+        </menu>
+    </item>
+
+</menu>
