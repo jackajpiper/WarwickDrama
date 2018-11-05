@@ -1,9 +1,14 @@
 package com.u1626889.warwickdrama;
 
+import java.util.*;
+
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v7.widget.CardView;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,10 +18,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.LinearLayout.LayoutParams;
+import android.graphics.Color;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
+    public ArrayList<String> idArr = new ArrayList<String>();
+    public ArrayList<String> titleArr = new ArrayList<String>();
+    public ArrayList<String> typeArr = new ArrayList<String>();
+    public ArrayList<String> societyArr = new ArrayList<String>();
+    public ArrayList<String> descArr = new ArrayList<String>();
+    private Context mContext;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,6 +47,67 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        idArr.add("post23");
+        titleArr.add("WITS Presents: A Play auditions");
+        typeArr.add("audition");
+        societyArr.add("WITS");
+        descArr.add("Come audition for Warwick Improv's edinburgh show, tentatively entitled 'A Play'! The audition will consist of a series of short form games.");
+
+
+
+
+        // Get the application context
+        mContext = getApplicationContext();
+
+        TextView tv = (TextView)findViewById(R.id.info_text);
+        tv.setText(titleArr.get(0));
+
+        final ConstraintLayout mConstraintLayout;
+
+        ImageButton button = findViewById(R.id.imageButton);
+        mConstraintLayout = (ConstraintLayout) findViewById(R.id.cardViewLayout);
+        button.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                CardView card = new CardView(mContext);
+
+
+                // Set the CardView layoutParams
+                LayoutParams params = new LayoutParams(
+                        LayoutParams.WRAP_CONTENT,
+                        LayoutParams.WRAP_CONTENT
+                );
+                card.setLayoutParams(params);
+
+                // Set CardView corner radius
+                card.setRadius(9);
+
+                // Set cardView content padding
+                card.setContentPadding(15, 15, 15, 15);
+
+                // Set a background color for CardView
+                card.setCardBackgroundColor(Color.parseColor("#FFC6D6C3"));
+
+                // Set the CardView maximum elevation
+                card.setMaxCardElevation(15);
+
+                // Set CardView elevation
+                card.setCardElevation(9);
+
+                // Initialize a new TextView to put in CardView
+                TextView tv = new TextView(mContext);
+                tv.setLayoutParams(params);
+                tv.setText("CardView\nProgrammatically");
+                tv.setTextColor(Color.RED);
+
+                // Put the TextView in CardView
+                card.addView(tv);
+
+                // Finally, add the CardView in root layout
+                mConstraintLayout.addView(card);
+            }
+        });
+
     }
 
     @Override
@@ -77,8 +153,4 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    public void moveToNew(View view) {
-        Intent intent = new Intent(this, SecondActivity.class);
-        startActivity(intent);
-    }
 }
