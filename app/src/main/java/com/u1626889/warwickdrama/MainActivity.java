@@ -9,6 +9,7 @@ import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.CardView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -26,7 +27,7 @@ import android.graphics.Color;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    public ArrayList<String> idArr = new ArrayList<String>();
+    public ArrayList<Integer> idArr = new ArrayList<Integer>();
     public ArrayList<String> titleArr = new ArrayList<String>();
     public ArrayList<String> typeArr = new ArrayList<String>();
     public ArrayList<String> societyArr = new ArrayList<String>();
@@ -48,11 +49,26 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        idArr.add("post23");
+        idArr.add(1);
+        idArr.add(2);
+        idArr.add(3);
+        idArr.add(4);
         titleArr.add("WITS Presents: A Play auditions");
-        typeArr.add("audition");
+        titleArr.add("oi get fucked i kiss dogs");
+        titleArr.add("Isn't it weird");
+        titleArr.add("My Minecraft account got deleted");
+        typeArr.add("Audition");
+        typeArr.add("Misc");
+        typeArr.add("Workshop");
+        typeArr.add("Misc");
         societyArr.add("WITS");
+        societyArr.add("MTW");
+        societyArr.add("Codpeice");
+        societyArr.add("Freshblood");
         descArr.add("Come audition for Warwick Improv's edinburgh show, tentatively entitled 'A Play'! The audition will consist of a series of short form games.");
+        descArr.add("oi get fucked i kiss dogs");
+        descArr.add("Isn't it weird how you feet smell and your nose runs but your dad doesn't love you");
+        descArr.add("My Minecraft account got deleted and now I can't even watch youtube song parodies without crying");
 
 
 
@@ -69,42 +85,53 @@ public class MainActivity extends AppCompatActivity
         mConstraintLayout = (ConstraintLayout) findViewById(R.id.cardViewLayout);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                CardView card = new CardView(mContext);
+                for(int i = 0; i < idArr.size(); i++) {
+                    CardView card = new CardView(mContext);
 
+                    // Set the CardView layoutParams
+                    ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(
+                            ConstraintLayout.LayoutParams.MATCH_PARENT,
+                            ConstraintLayout.LayoutParams.WRAP_CONTENT
+                    );
+                    params.setMargins(15, 15, 15, 15);
+                    if(i == 0) {
+                        params.topToBottom = R.id.card_view9;
+                    } else {
+                        params.topToBottom = idArr.get(i-1);
+                    }
 
-                // Set the CardView layoutParams
-                LayoutParams params = new LayoutParams(
-                        LayoutParams.WRAP_CONTENT,
-                        LayoutParams.WRAP_CONTENT
-                );
-                card.setLayoutParams(params);
+                    card.setLayoutParams(params);
 
-                // Set CardView corner radius
-                card.setRadius(9);
+                    // Set CardView corner radius
+                    card.setRadius(4);
 
-                // Set cardView content padding
-                card.setContentPadding(15, 15, 15, 15);
+                    // Set cardView content padding
+                    card.setContentPadding(15, 15, 15, 15);
 
-                // Set a background color for CardView
-                card.setCardBackgroundColor(Color.parseColor("#FFC6D6C3"));
+                    // Set a background color for CardView
+                    card.setCardBackgroundColor(Color.LTGRAY);
 
-                // Set the CardView maximum elevation
-                card.setMaxCardElevation(15);
+                    // Set the CardView maximum elevation
+                    card.setMaxCardElevation(15);
 
-                // Set CardView elevation
-                card.setCardElevation(9);
+                    // Set CardView elevation
+                    card.setCardElevation(9);
 
-                // Initialize a new TextView to put in CardView
-                TextView tv = new TextView(mContext);
-                tv.setLayoutParams(params);
-                tv.setText("CardView\nProgrammatically");
-                tv.setTextColor(Color.RED);
+                    card.setId(idArr.get(i));
 
-                // Put the TextView in CardView
-                card.addView(tv);
+                    // Initialize a new TextView to put in CardView
+                    TextView tv = new TextView(mContext);
+                    tv.setLayoutParams(params);
+                    tv.setText(societyArr.get(i) + "\n"+ typeArr.get(i) + "\n\n" + titleArr.get(i) + "\n\n" + idArr.get(i));
+                    tv.setTextColor(Color.RED);
 
-                // Finally, add the CardView in root layout
-                mConstraintLayout.addView(card);
+                    // Put the TextView in CardView
+                    card.addView(tv);
+
+                    // Finally, add the CardView in root layout
+                    mConstraintLayout.addView(card);
+                }
+
             }
         });
 
