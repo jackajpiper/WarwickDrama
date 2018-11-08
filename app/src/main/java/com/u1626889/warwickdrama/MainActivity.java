@@ -35,12 +35,16 @@ public class MainActivity extends AppCompatActivity
     public ArrayList<String> societyArr = new ArrayList<String>();
     public ArrayList<String> descArr = new ArrayList<String>();
     public ArrayList<Boolean> expandArr = new ArrayList<Boolean>();
+    // This variable holds the id of the cardview most recently added to the layout.
+    // This allows the following cardview to chain itself under it
+    public int mostRecentCardId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        toolbar.setTitle("Warwick Drama");
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -51,6 +55,8 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        // INITIALISES THE MOST RECENT CARD BECAUSE THERE ISN'T ONE YET
+        mostRecentCardId = -1;
         idArr.add(1);
         idArr.add(2);
         idArr.add(3);
@@ -102,41 +108,8 @@ public class MainActivity extends AppCompatActivity
 
 
         for(int i = 0; i < idArr.size(); i++) {
-            CardView card = new CardView(this);
             ConstraintLayout currentLayout = (ConstraintLayout) findViewById(R.id.cardViewLayout);
-
-            // Set the CardView layoutParams and define how it will be arranged on the screen
-            ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(
-                    ConstraintLayout.LayoutParams.MATCH_PARENT,
-                    ConstraintLayout.LayoutParams.WRAP_CONTENT
-            );
-            params.setMargins(30, 30, 30, 30);
-            if(i == 0) {
-                params.topToTop = currentLayout.getId();
-            } else {
-                params.topToBottom = idArr.get(i-1);
-            }
-            card.setLayoutParams(params);
-            // Set CardView corner radius
-            card.setRadius(4);
-            // Set cardView content padding
-            card.setContentPadding(15, 15, 15, 15);
-            // Set a background color for CardView
-            card.setCardBackgroundColor(Color.parseColor("#0dd6dd"));
-            // Set the CardView maximum elevation
-            card.setMaxCardElevation(15);
-            // Set CardView elevation
-            card.setCardElevation(9);
-            // THE FUNCTION View.generateViewId() WILL BE USED WHEN THE POST IS CREATED, SO idArr WILL HAVE A UNIQUE ID ALREADY, DON'T WORRY.
-            card.setId(idArr.get(i));
-            card.setTag("cardView"+idArr.get(i));
-
-
-            ConstraintLayout insideLayout = makeCardInside(idArr.get(i),titleArr.get(i),typeArr.get(i),societyArr.get(i),descArr.get(i));
-
-
-            card.addView(insideLayout);
-
+            CardView card = createCard(currentLayout, i);
             // Finally, add the CardView in the correct layout
             currentLayout.addView(card);
         }
@@ -166,9 +139,8 @@ public class MainActivity extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.codpeice) {
             return true;
         }
 
@@ -179,12 +151,72 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        int id = item.getItemId();
+        String title = item.getTitle().toString();
+        // Runs the method to only show posts related to that menu item
+        switch (title) {
+            case "Codpeice": societySpecific("Codpeice");break;
+            case "Freshblood": societySpecific("Freshblood");break;
+            case "Musical Theatre Warwick": societySpecific("MTW");break;
+            case "Opera Warwick": societySpecific("OpWa");break;
+            case "ShakeSoc": societySpecific("ShakeSoc");break;
+            case "Tech Crew": societySpecific("TechCrew");break;
+            case "Warwick Improvised Theatre Society": societySpecific("WITS");break;
+            case "Warwick University Drama Society": societySpecific("WUDS");break;
+            default: societySpecific("");break;
+        }
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        if(title.equals("Home")) toolbar.setTitle("Warwick Drama");
+        else toolbar.setTitle(title);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
+
+
+    // Method to create a card. Refers to the method to create the internal layout of a card
+    public CardView createCard(ConstraintLayout currentLayout, int i) {
+        // Set the CardView layoutParams and define how it will be arranged on the screen
+        CardView card = new CardView(this);
+        // THE FUNCTION View.generateViewId() WILL BE USED WHEN THE POST IS CREATED, SO idArr WILL HAVE A UNIQUE ID ALREADY, DON'T WORRY.
+        card.setId(idArr.get(i));
+        card.setTag("cardView"+idArr.get(i));
+        ConstraintLayout.LayoutParams params = new ConstraintLayout.LayoutParams(
+                ConstraintLayout.LayoutParams.MATCH_PARENT,
+                ConstraintLayout.LayoutParams.WRAP_CONTENT
+        );
+
+        params.setMargins(30, 30, 30, 30);
+        if(mostRecentCardId == -1) {
+            params.topToTop = currentLayout.getId();
+            mostRecentCardId = card.getId();
+        }
+        else {
+            params.topToBottom = mostRecentCardId;
+            mostRecentCardId = card.getId();
+        }
+
+
+        card.setLayoutParams(params);
+        // Set CardView corner radius
+        card.setRadius(4);
+        // Set cardView content padding
+        card.setContentPadding(15, 15, 15, 15);
+        // Set a background color for CardView
+        card.setCardBackgroundColor(Color.parseColor("#0dd6dd"));
+        // Set the CardView maximum elevation
+        card.setMaxCardElevation(15);
+        // Set CardView elevation
+        card.setCardElevation(9);
+
+        // Create the layout to go inside the card, and add it to the card
+        ConstraintLayout insideLayout = makeCardInside(idArr.get(i),titleArr.get(i),typeArr.get(i),societyArr.get(i),descArr.get(i));
+        card.addView(insideLayout);
+        return card;
+    }
+
 
     // This method creates the layout that will go inside a CardView, given the required data
     public ConstraintLayout makeCardInside(final int cardid, final String title, final String type, final String society, final String desc) {
@@ -213,8 +245,8 @@ public class MainActivity extends AppCompatActivity
         );
         insideLayout.setLayoutParams(params);
 
-        ImageButton button = new ImageButton(this);
-        button.setBackgroundResource(R.drawable.ic_menu_send);
+        final ImageButton button = new ImageButton(this);
+        button.setBackgroundResource(R.drawable.ic_expand_card);
         // Define the layout parameters for the image button
         IMGparams.height = 120;
         IMGparams.width = 120;
@@ -240,9 +272,11 @@ public class MainActivity extends AppCompatActivity
                 tv.setText(" "+arrayNum);
                 if(expandArr.get(arrayNum) == false) {
                     tv.setText(society + "\n"+ type + "\n\n" + title + "\n\n" + desc);
+                    button.setBackgroundResource(R.drawable.ic_collapse_card);
                     expandArr.set(arrayNum,true);
                 } else {
                     tv.setText(society + "\n"+ type + "\n\n" + title);
+                    button.setBackgroundResource(R.drawable.ic_expand_card);
                     expandArr.set(arrayNum,false);
                 }
             }
@@ -252,6 +286,30 @@ public class MainActivity extends AppCompatActivity
         insideLayout.addView(tv);
         insideLayout.addView(button);
         return insideLayout;
+    }
+
+    public void societySpecific(String society) {
+        ConstraintLayout currentLayout = (ConstraintLayout) findViewById(R.id.cardViewLayout);
+        currentLayout.removeAllViews();
+        mostRecentCardId = -1;
+
+        // The society is "" when the user clicks 'Home', so add all the posts
+        if(society.equals("")) {
+            for(int i = 0; i < idArr.size(); i++) {
+                CardView card = createCard(currentLayout, i);
+                currentLayout.addView(card);
+            }
+        } else {
+            // Otherwise, only add posts which are part of the selected society
+            for(int i = 0; i < idArr.size(); i++) {
+                if(societyArr.get(i).equals(society)) {
+                    CardView card = createCard(currentLayout, i);
+                    // Finally, add the CardView in the correct layout
+                    currentLayout.addView(card);
+                }
+            }
+        }
+
     }
 
 }

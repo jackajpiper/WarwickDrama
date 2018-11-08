@@ -8,6 +8,10 @@
         android:layout_height="wrap_content"
         android:checkableBehavior="single">
         <item
+            android:id="@+id/home"
+            android:icon="@drawable/ic_home"
+            android:title="Home" />
+        <item
             android:id="@+id/nav_camera"
             android:icon="@drawable/ic_menu_camera"
             android:title="Create a note" />
@@ -25,7 +29,7 @@
         <menu>
             <item
                 android:id="@+id/codpeice"
-                android:icon="@drawable/ic_menu_send"
+                android:background="@mipmap/ic_warwickdrama_round"
                 android:title="Codpeice" />
             <item
                 android:id="@+id/freshblood"
