@@ -7,4 +7,22 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_second">SecondActivity</string>
+    <string-array name="societies_array">
+        <item>Codpeice</item>
+        <item>Freshblood</item>
+        <item>Musical Theatre Warwick</item>
+        <item>Opera Warwick</item>
+        <item>ShakeSoc</item>
+        <item>Tech Crew</item>
+        <item>Warwick Improvised Theatre Society</item>
+        <item>Warwick University Drama Society</item>
+    </string-array>
+    <string-array name="note_type_array">
+        <item>Show</item>
+        <item>Audition</item>
+        <item>Social</item>
+        <item>Crew/production opportunity</item>
+        <item>Announcement</item>
+    </string-array>
+
 </resources>

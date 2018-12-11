@@ -154,6 +154,12 @@ public class MainActivity extends AppCompatActivity
         String title = item.getTitle().toString();
         // Runs the method to only show posts related to that menu item
         switch (title) {
+
+            case "Create a note":
+                Intent intent = new Intent(this, CreatePostActivity.class);
+                startActivity(intent);
+                break;
+
             case "Codpeice": societySpecific("Codpeice");break;
             case "Freshblood": societySpecific("Freshblood");break;
             case "Musical Theatre Warwick": societySpecific("MTW");break;
