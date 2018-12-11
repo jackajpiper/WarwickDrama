@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity
     // This variable holds the id of the cardview most recently added to the layout.
     // This allows the following cardview to chain itself under it
     public int mostRecentCardId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
