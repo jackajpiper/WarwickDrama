@@ -37,14 +37,13 @@ public class CreatePostActivity extends AppCompatActivity {
         final Context context = this;
         final Calendar myCalendar = Calendar.getInstance();
         final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.UK);
-        EditText contact_text = (EditText) findViewById(R.id.dateText);
+        final EditText contact_text = (EditText) findViewById(R.id.dateText);
 
         // init - set date to current date
         long currentdate = System.currentTimeMillis();
         String dateString = sdf.format(currentdate);
         contact_text.setText(dateString);
 
-        EditText edittext= (EditText) findViewById(R.id.dateText);
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
 
             @Override
@@ -54,7 +53,6 @@ public class CreatePostActivity extends AppCompatActivity {
                 myCalendar.set(Calendar.YEAR, year);
                 myCalendar.set(Calendar.MONTH, monthOfYear);
                 myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                EditText contact_text = (EditText)findViewById(R.id.dateText);
                 contact_text.setText(sdf.format(myCalendar.getTime()));
             }
 

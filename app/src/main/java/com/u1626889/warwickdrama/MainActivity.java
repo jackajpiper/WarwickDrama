@@ -108,6 +108,26 @@ public class MainActivity extends AppCompatActivity
         expandArr.add(false);
 
 
+//               THIS SHOULD BE DELETED WHEN THE DATABASE IS MADE, RIGHT NOW IT JUST ADDS THE NEWLY CREATED POST TO THE LIST, THE POST SHOULD NOW BE IN THE DATABASE ANYWAY
+        Intent intent = getIntent();
+        if(intent.getStringExtra("title")!=null) {
+            int id = intent.getIntExtra("id",0);
+            String title = intent.getStringExtra("title");
+            String contact = intent.getStringExtra("contact");
+            String date = intent.getStringExtra("date");
+            String description = intent.getStringExtra("description");
+            String society = intent.getStringExtra("society");
+            String type = intent.getStringExtra("type");
+            String[] tags = intent.getStringArrayExtra("tags");
+            idArr.add(id);
+            titleArr.add(title);
+            typeArr.add(type);
+            societyArr.add(society);
+            descArr.add(description);
+            expandArr.add(false);
+        }
+
+
         for(int i = 0; i < idArr.size(); i++) {
             ConstraintLayout currentLayout = (ConstraintLayout) findViewById(R.id.cardViewLayout);
             CardView card = createCard(currentLayout, i);

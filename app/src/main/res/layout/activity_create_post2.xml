@@ -6,41 +6,54 @@
     android:layout_height="match_parent"
     tools:context=".CreatePost2Activity">
 
-    <EditText
-        android:id="@+id/editText"
-        android:layout_width="0dp"
-        android:layout_height="200"
+    <Button
+        android:id="@+id/create_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:onClick="postPostData"
+        android:text="Create"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <ListView
+        android:id="@+id/tag_list"
+        android:layout_width="368dp"
+        android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:ems="10"
-        android:hint="Enter all your filthy tags (comma separated)"
-        android:inputType="textMultiLine"
+        android:layout_marginBottom="8dp"
+        android:entries="@array/note_type_array"
+        app:layout_constraintBottom_toTopOf="@+id/add_tag_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/create_button"
+        android:id="@+id/add_tag_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginEnd="4dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:text="Create"
+        android:onClick="addTag"
+        android:text="Add tag"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/back_button" />
+        app:layout_constraintEnd_toStartOf="@+id/create_button" />
 
-    <Button
-        android:id="@+id/back_button"
-        android:layout_width="wrap_content"
+    <EditText
+        android:id="@+id/new_tag_text"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:text="Back"
+        android:ems="10"
+        android:hint="New tag"
+        android:inputType="textPersonName"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/create_button"
+        app:layout_constraintEnd_toStartOf="@+id/add_tag_button"
         app:layout_constraintStart_toStartOf="parent" />
+
 </android.support.constraint.ConstraintLayout>

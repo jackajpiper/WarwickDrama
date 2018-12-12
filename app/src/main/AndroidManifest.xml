@@ -28,13 +28,19 @@
             android:name=".CreatePostActivity"
             android:label="Create a post"
             android:parentActivityName=".MainActivity">
-
-            <!-- android:theme="@style/AppTheme.NoActionBar"> -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
-        <activity android:name=".CreatePost2Activity"></activity>
+
+        <activity
+            android:name=".CreatePost2Activity"
+            android:label="Add tags"
+            android:parentActivityName=".CreatePostActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".CreatePostActivity" />
+        </activity>
     </application>
 
 </manifest>
