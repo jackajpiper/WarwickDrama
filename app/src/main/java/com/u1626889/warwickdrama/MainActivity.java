@@ -131,6 +131,14 @@ public class MainActivity extends AppCompatActivity
         for(int i = 0; i < idArr.size(); i++) {
             ConstraintLayout currentLayout = (ConstraintLayout) findViewById(R.id.cardViewLayout);
             CardView card = createCard(currentLayout, i);
+            // Add an onclick listener to view the post in full
+
+            card.setOnClickListener(new View.OnClickListener() {
+                @Override public void onClick(View v) {
+                    Intent intent = new Intent(MainActivity.this, ViewPostActivity.class);
+                    startActivity(intent);
+                }
+            });
             // Finally, add the CardView in the correct layout
             currentLayout.addView(card);
         }
