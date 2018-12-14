@@ -33,10 +33,11 @@
                                   </option>
                                   <option name="values">
                                     <map>
-                                      <entry key="imageAsset" value="$USER_HOME$/Pictures/warwick drama/codpeice.jpg" />
-                                      <entry key="outputName" value="ic_home" />
+                                      <entry key="assetType" value="IMAGE" />
+                                      <entry key="imageAsset" value="$USER_HOME$/Pictures/save_star.png" />
+                                      <entry key="outputName" value="ic_unsave" />
                                       <entry key="theme" value="CUSTOM" />
-                                      <entry key="themeColor" value="000000" />
+                                      <entry key="themeColor" value="cfcfcf" />
                                     </map>
                                   </option>
                                 </PersistentState>

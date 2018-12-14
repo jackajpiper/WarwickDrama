@@ -29,15 +29,20 @@ import android.graphics.Color;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    public ArrayList<Integer> idArr = new ArrayList<Integer>();
-    public ArrayList<String> titleArr = new ArrayList<String>();
-    public ArrayList<String> typeArr = new ArrayList<String>();
-    public ArrayList<String> societyArr = new ArrayList<String>();
-    public ArrayList<String> descArr = new ArrayList<String>();
-    public ArrayList<Boolean> expandArr = new ArrayList<Boolean>();
+    public static ArrayList<Integer> idArr = new ArrayList<Integer>();
+    public static ArrayList<String> titleArr = new ArrayList<String>();
+    public static ArrayList<String> typeArr = new ArrayList<String>();
+    public static ArrayList<String> societyArr = new ArrayList<String>();
+    public static ArrayList<String> contactArr = new ArrayList<String>();
+    public static ArrayList<String> descArr = new ArrayList<String>();
+    public static ArrayList<Boolean> expandArr = new ArrayList<Boolean>();
     // This variable holds the id of the cardview most recently added to the layout.
     // This allows the following cardview to chain itself under it
     public int mostRecentCardId;
+
+    public ArrayList<Integer> getIds() {
+        return idArr;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +60,15 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+        idArr.clear();
+        titleArr.clear();
+        typeArr.clear();
+        societyArr.clear();
+        descArr.clear();
+        expandArr.clear();
+
 
         // INITIALISES THE MOST RECENT CARD BECAUSE THERE ISN'T ONE YET
         mostRecentCardId = -1;
@@ -90,7 +104,15 @@ public class MainActivity extends AppCompatActivity
         societyArr.add("Freshblood");
         societyArr.add("WUDS");
         societyArr.add("Other");
-        descArr.add("Come audition for Warwick Improv's edinburgh show, tentatively entitled 'A Play'! The audition will consist of a series of short form games.");
+        contactArr.add("Jack Piper");
+        contactArr.add("Ben Chapman");
+        contactArr.add("Amy Hodkin");
+        contactArr.add("Matt Groaning");
+        contactArr.add("Jack Starkey");
+        contactArr.add("Amy Cairns");
+        contactArr.add("Charlie Cooper");
+        contactArr.add("Marianne Steggall");
+        descArr.add("Come audition for Warwick Improv's edinburgh show, \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g tentatively entitled 'A Play'! The audition will consist of a series of short form games.");
         descArr.add("Rent is having a fundraiser, come support this terrible show. Try not to think about how Angel kills dogs.");
         descArr.add("A View From The Bridge is a crackin ply with accents and a chair. Come see.");
         descArr.add("behind the eyes needs an assistant producer, and that assistant producer that behind the eyes needs, it could be you.");
@@ -127,8 +149,8 @@ public class MainActivity extends AppCompatActivity
             expandArr.add(false);
         }
 
-
         for(int i = 0; i < idArr.size(); i++) {
+            final int num = i;
             ConstraintLayout currentLayout = (ConstraintLayout) findViewById(R.id.cardViewLayout);
             CardView card = createCard(currentLayout, i);
             // Add an onclick listener to view the post in full
@@ -136,6 +158,7 @@ public class MainActivity extends AppCompatActivity
             card.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
                     Intent intent = new Intent(MainActivity.this, ViewPostActivity.class);
+                    intent.putExtra("postNumber", num);
                     startActivity(intent);
                 }
             });

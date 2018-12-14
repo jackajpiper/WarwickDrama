@@ -1,5 +1,6 @@
 package com.u1626889.warwickdrama;
 
+import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -10,13 +11,18 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 public class ViewPostActivity extends AppCompatActivity {
 
@@ -45,11 +51,15 @@ public class ViewPostActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), MainActivity.idArr.size(), MainActivity.idArr,MainActivity.titleArr, MainActivity.typeArr, MainActivity.societyArr, MainActivity.contactArr, MainActivity.descArr);
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
+
+        Intent intent = getIntent();
+        int firstNum = intent.getIntExtra("postNumber",MainActivity.idArr.get(0));
+        mViewPager.setCurrentItem(firstNum);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -59,6 +69,19 @@ public class ViewPostActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        // TODO: implement 'saved' functionality from here
+//        final ImageView save_button = findViewById(R.id.imageView3);
+//        save_button.setImageResource(R.drawable.ic_unsave);
+//        final boolean saved = false;
+//        save_button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                if(saved) {
+//                    save_button.setImageResource(R.drawable.ic_save);
+//                }
+//            }
+//        });
 
     }
 
@@ -70,21 +93,6 @@ public class ViewPostActivity extends AppCompatActivity {
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     /**
      * A placeholder fragment containing a simple view.
      */
@@ -94,18 +102,27 @@ public class ViewPostActivity extends AppCompatActivity {
          * fragment.
          */
         private static final String ARG_SECTION_NUMBER = "section_number";
-
-        public PlaceholderFragment() {
-        }
+        private static final String ARG_ID = "id";
+        private static final String ARG_TITLE = "title";
+        private static final String ARG_TYPE = "type";
+        private static final String ARG_SOCIETY = "society";
+        private static final String ARG_CONTACT = "contact";
+        private static final String ARG_DESC = "desc";
 
         /**
          * Returns a new instance of this fragment for the given section
          * number.
          */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
+        public static PlaceholderFragment newInstance(int sectionNumber, int id, String title, String type, String society, String contact, String desc) {
             PlaceholderFragment fragment = new PlaceholderFragment();
             Bundle args = new Bundle();
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+            args.putInt(ARG_ID, id);
+            args.putString(ARG_TITLE, title);
+            args.putString(ARG_TYPE, type);
+            args.putString(ARG_SOCIETY, society);
+            args.putString(ARG_CONTACT, contact);
+            args.putString(ARG_DESC, desc);
             fragment.setArguments(args);
             return fragment;
         }
@@ -114,8 +131,24 @@ public class ViewPostActivity extends AppCompatActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_view_post, container, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label);
-            textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
+            TextView typeText = (TextView) rootView.findViewById(R.id.typeText);
+            TextView titleText = (TextView) rootView.findViewById(R.id.titleText);
+            TextView contactText = (TextView) rootView.findViewById(R.id.contactText);
+            TextView descText = (TextView) rootView.findViewById(R.id.descText);
+
+            int id = getArguments().getInt(ARG_ID);
+            String title = getArguments().getString(ARG_TITLE);
+            String type = getArguments().getString(ARG_TYPE);
+            String society = getArguments().getString(ARG_SOCIETY);
+            String contact = getArguments().getString(ARG_CONTACT);
+            String desc = getArguments().getString(ARG_DESC);
+
+            typeText.setText(type);
+            titleText.setText(title);
+            contactText.setText(contact);
+            descText.setText(desc);
+            descText.setMovementMethod(new ScrollingMovementMethod());
+
             return rootView;
         }
     }
@@ -126,21 +159,36 @@ public class ViewPostActivity extends AppCompatActivity {
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
-        public SectionsPagerAdapter(FragmentManager fm) {
+        int postCount;
+        ArrayList<Integer> ids;
+        ArrayList<String> titles;
+        ArrayList<String> types;
+        ArrayList<String> socieites;
+        ArrayList<String> contacts;
+        ArrayList<String> descs;
+
+        public SectionsPagerAdapter(FragmentManager fm, int count, ArrayList<Integer> intarr, ArrayList<String> titlearr, ArrayList<String> typearr, ArrayList<String> societyarr, ArrayList<String> contactarr, ArrayList<String> descarr) {
             super(fm);
+            postCount = count;
+            ids = new ArrayList<Integer>(intarr);
+            titles = new ArrayList<String>(titlearr);
+            types = new ArrayList<String>(typearr);
+            socieites = new ArrayList<String>(societyarr);
+            contacts = new ArrayList<String>(contactarr);
+            descs= new ArrayList<String>(descarr);
         }
 
         @Override
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1);
+            return PlaceholderFragment.newInstance(position + 1,postCount,titles.get(position),types.get(position),socieites.get(position),contacts.get(position),descs.get(position));
         }
 
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 3;
+            return postCount;
         }
     }
 }
