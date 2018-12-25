@@ -2,14 +2,18 @@ package com.u1626889.warwickdrama;
 
 import java.util.*;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +25,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Adapter;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -44,6 +49,9 @@ public class MainActivity extends AppCompatActivity
         return idArr;
     }
 
+    // The interface through which we access the database
+    private WDViewModel mViewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +68,33 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+//        TRYING THIS DATABASE THING, HERE GOES
+
+        // TWO THINGS ARE ADDED TO THE DATABASE BUT THEY ARE NULL
+
+        RecyclerView recyclerView = findViewById(R.id.recyclerview);
+        final PostListAdapter adapter = new PostListAdapter(this);
+        recyclerView.setAdapter(adapter);
+
+
+        mViewModel = ViewModelProviders.of(this).get(WDViewModel.class);
+
+        mViewModel.getmAllPosts().observe(this, new Observer<List<Post>>() {
+            @Override
+            public void onChanged(@Nullable List<Post> posts) {
+                adapter.setPosts(posts);
+                adapter.notifyDataSetChanged();
+            }
+        });
+
+        int i = adapter.getItemCount();
+
+        Log.d("thing", "item count is "+i);
+
+
+
 
 
         idArr.clear();
@@ -149,24 +184,31 @@ public class MainActivity extends AppCompatActivity
             expandArr.add(false);
         }
 
-        for(int i = 0; i < idArr.size(); i++) {
-            final int num = i;
-            ConstraintLayout currentLayout = (ConstraintLayout) findViewById(R.id.cardViewLayout);
-            CardView card = createCard(currentLayout, i);
-            // Add an onclick listener to view the post in full
-
-            card.setOnClickListener(new View.OnClickListener() {
-                @Override public void onClick(View v) {
-                    Intent intent = new Intent(MainActivity.this, ViewPostActivity.class);
-                    intent.putExtra("postNumber", num);
-                    startActivity(intent);
-                }
-            });
-            // Finally, add the CardView in the correct layout
-            currentLayout.addView(card);
-        }
+//        for(int i = 0; i < idArr.size(); i++) {
+//            final int num = i;
+//            ConstraintLayout currentLayout = (ConstraintLayout) findViewById(R.id.cardViewLayout);
+//            CardView card = createCard(currentLayout, i);
+//            // Add an onclick listener to view the post in full
+//
+//            card.setOnClickListener(new View.OnClickListener() {
+//                @Override public void onClick(View v) {
+//                    Intent intent = new Intent(MainActivity.this, ViewPostActivity.class);
+//                    intent.putExtra("postNumber", num);
+//                    startActivity(intent);
+//                }
+//            });
+//            // Finally, add the CardView in the correct layout
+//            currentLayout.addView(card);
+//        }
 
     }
+
+    // TODO - this should run when the reply activity returns with the data for a new post
+    // see https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#11
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        Post
+//    }
 
     @Override
     public void onBackPressed() {
@@ -211,17 +253,29 @@ public class MainActivity extends AppCompatActivity
                 Intent intent = new Intent(this, CreatePostActivity.class);
                 startActivity(intent);
                 break;
-
-            case "Codpeice": societySpecific("Codpeice");break;
-            case "Freshblood": societySpecific("Freshblood");break;
-            case "Musical Theatre Warwick": societySpecific("MTW");break;
-            case "Opera Warwick": societySpecific("OpWa");break;
-            case "ShakeSoc": societySpecific("ShakeSoc");break;
-            case "Tech Crew": societySpecific("TechCrew");break;
-            case "Warwick Improvised Theatre Society": societySpecific("WITS");break;
-            case "Warwick University Drama Society": societySpecific("WUDS");break;
-            default: societySpecific("");break;
+                // TODO there are a bunch of these commented out sections - replace them as necessary
+//            case "Codpeice": societySpecific("Codpeice");break;
+//            case "Freshblood": societySpecific("Freshblood");break;
+//            case "Musical Theatre Warwick": societySpecific("MTW");break;
+//            case "Opera Warwick": societySpecific("OpWa");break;
+//            case "ShakeSoc": societySpecific("ShakeSoc");break;
+//            case "Tech Crew": societySpecific("TechCrew");break;
+//            case "Warwick Improvised Theatre Society": societySpecific("WITS");break;
+//            case "Warwick University Drama Society": societySpecific("WUDS");break;
+//            default: societySpecific("");break;
         }
+
+        // TODO - this is temp debugging
+        // the issue seems to be that the items are added to the database and added to the recycler view, but not properly.
+        // The recycler view has two things, but both ARE NULL
+        // THEY'RE NULL
+        RecyclerView recyclerView = findViewById(R.id.recyclerview);
+        PostListAdapter adapter = (PostListAdapter) recyclerView.getAdapter();
+        int i = adapter.getItemCount();
+        long id = adapter.getItemId(0);
+        Log.d("thing", "item count is "+i + " and id 0 is " + id + " and    "+recyclerView.getChildAt(0).getId());
+
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if(title.equals("Home")) toolbar.setTitle("Warwick Drama");
@@ -346,28 +400,28 @@ public class MainActivity extends AppCompatActivity
         return insideLayout;
     }
 
-    public void societySpecific(String society) {
-        ConstraintLayout currentLayout = (ConstraintLayout) findViewById(R.id.cardViewLayout);
-        currentLayout.removeAllViews();
-        mostRecentCardId = -1;
-
-        // The society is "" when the user clicks 'Home', so add all the posts
-        if(society.equals("")) {
-            for(int i = 0; i < idArr.size(); i++) {
-                CardView card = createCard(currentLayout, i);
-                currentLayout.addView(card);
-            }
-        } else {
-            // Otherwise, only add posts which are part of the selected society
-            for(int i = 0; i < idArr.size(); i++) {
-                if(societyArr.get(i).equals(society)) {
-                    CardView card = createCard(currentLayout, i);
-                    // Finally, add the CardView in the correct layout
-                    currentLayout.addView(card);
-                }
-            }
-        }
-
-    }
+//    public void societySpecific(String society) {
+//        ConstraintLayout currentLayout = (ConstraintLayout) findViewById(R.id.cardViewLayout);
+//        currentLayout.removeAllViews();
+//        mostRecentCardId = -1;
+//
+//        // The society is "" when the user clicks 'Home', so add all the posts
+//        if(society.equals("")) {
+//            for(int i = 0; i < idArr.size(); i++) {
+//                CardView card = createCard(currentLayout, i);
+//                currentLayout.addView(card);
+//            }
+//        } else {
+//            // Otherwise, only add posts which are part of the selected society
+//            for(int i = 0; i < idArr.size(); i++) {
+//                if(societyArr.get(i).equals(society)) {
+//                    CardView card = createCard(currentLayout, i);
+//                    // Finally, add the CardView in the correct layout
+//                    currentLayout.addView(card);
+//                }
+//            }
+//        }
+//
+//    }
 
 }

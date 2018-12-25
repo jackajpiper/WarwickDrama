@@ -1,1 +1,5 @@
 include ':app'
+ext {
+    roomVersion = '1.1.1'
+    archLifecycleVersion = '1.1.1'
+}
