@@ -6,6 +6,7 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Rect;
 import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,6 +14,8 @@ import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -55,6 +58,11 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d("thing"," ");
+        Log.d("thing"," ");
+        Log.d("thing","NEW INSTANCE");
+        Log.d("thing"," ");
+        Log.d("thing"," ");
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -76,94 +84,39 @@ public class MainActivity extends AppCompatActivity
 
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
         final PostListAdapter adapter = new PostListAdapter(this);
-        recyclerView.setAdapter(adapter);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
 
+        // Makes the divider to go between the items in the recycler view, change the gap by editing the method
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
+                layoutManager.getOrientation()) {
+            @Override
+            public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+                super.getItemOffsets(outRect, view, parent, state);
+                if (parent.getChildAdapterPosition(view) == 0) {
+                    return;
+                }
+                outRect.top = 15;
+            }
+        };
+
+        recyclerView.addItemDecoration(dividerItemDecoration);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
 
         mViewModel = ViewModelProviders.of(this).get(WDViewModel.class);
 
-        mViewModel.getmAllPosts().observe(this, new Observer<List<Post>>() {
+        mViewModel.getAllPosts().observe(this, new Observer<List<Post>>() {
             @Override
             public void onChanged(@Nullable List<Post> posts) {
                 adapter.setPosts(posts);
+                Log.d("thing","ONCREATE, there has been a change to the posts.");
                 adapter.notifyDataSetChanged();
             }
         });
 
         int i = adapter.getItemCount();
 
-        Log.d("thing", "item count is "+i);
-
-
-
-
-
-        idArr.clear();
-        titleArr.clear();
-        typeArr.clear();
-        societyArr.clear();
-        descArr.clear();
-        expandArr.clear();
-
-
-        // INITIALISES THE MOST RECENT CARD BECAUSE THERE ISN'T ONE YET
-        mostRecentCardId = -1;
-        idArr.add(1);
-        idArr.add(2);
-        idArr.add(3);
-        idArr.add(4);
-        idArr.add(5);
-        idArr.add(6);
-        idArr.add(7);
-        idArr.add(8);
-        titleArr.add("WITS Presents: A Play auditions");
-        titleArr.add("Rent fundraiser!");
-        titleArr.add("A View From The Bridge");
-        titleArr.add("Producer needed! Behind the Eyes");
-        titleArr.add("WUDS and improv and you");
-        titleArr.add("Freshblood Views The Bridge!");
-        titleArr.add("Death Of An Anarchist auditions");
-        titleArr.add("Be on the DC panel!");
-        typeArr.add("Audition");
-        typeArr.add("Social");
-        typeArr.add("Show");
-        typeArr.add("Production Opportunity");
-        typeArr.add("Workshop");
-        typeArr.add("Social");
-        typeArr.add("Audition");
-        typeArr.add("Announcement");
-        societyArr.add("WITS");
-        societyArr.add("MTW");
-        societyArr.add("WUDS");
-        societyArr.add("Codpeice");
-        societyArr.add("WUDS");
-        societyArr.add("Freshblood");
-        societyArr.add("WUDS");
-        societyArr.add("Other");
-        contactArr.add("Jack Piper");
-        contactArr.add("Ben Chapman");
-        contactArr.add("Amy Hodkin");
-        contactArr.add("Matt Groaning");
-        contactArr.add("Jack Starkey");
-        contactArr.add("Amy Cairns");
-        contactArr.add("Charlie Cooper");
-        contactArr.add("Marianne Steggall");
-        descArr.add("Come audition for Warwick Improv's edinburgh show, \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g  \n g tentatively entitled 'A Play'! The audition will consist of a series of short form games.");
-        descArr.add("Rent is having a fundraiser, come support this terrible show. Try not to think about how Angel kills dogs.");
-        descArr.add("A View From The Bridge is a crackin ply with accents and a chair. Come see.");
-        descArr.add("behind the eyes needs an assistant producer, and that assistant producer that behind the eyes needs, it could be you.");
-        descArr.add("WUDS are running a worskhop on improv, and they've used WITS as a way of injecting a bit of that.");
-        descArr.add("Your lovely freshblood social secs are gonna be at the duck at 6pm practicing our accents before jetting off to see WUDS' latest production - A View From The Bridge!");
-        descArr.add("Be an actor! Not an acorn. Act as the lead. Or as a support. Yay.");
-        descArr.add("Would YOU like to be the sole arbiter of people's hopes and dreams? Well, this is the next best thing I promise.");
-        expandArr.add(false);
-        expandArr.add(false);
-        expandArr.add(false);
-        expandArr.add(false);
-        expandArr.add(false);
-        expandArr.add(false);
-        expandArr.add(false);
-        expandArr.add(false);
-
+        Log.d("thing", "ONCREATE, item count is "+i);
 
 //               THIS SHOULD BE DELETED WHEN THE DATABASE IS MADE, RIGHT NOW IT JUST ADDS THE NEWLY CREATED POST TO THE LIST, THE POST SHOULD NOW BE IN THE DATABASE ANYWAY
         Intent intent = getIntent();
@@ -273,7 +226,10 @@ public class MainActivity extends AppCompatActivity
         PostListAdapter adapter = (PostListAdapter) recyclerView.getAdapter();
         int i = adapter.getItemCount();
         long id = adapter.getItemId(0);
-        Log.d("thing", "item count is "+i + " and id 0 is " + id + " and    "+recyclerView.getChildAt(0).getId());
+
+        View firstViewChild = recyclerView.getChildAt(0);
+        boolean isChildNull = (firstViewChild == null);
+        Log.d("thing", "OnNavItemSelected, item count is "+i + " and id 0 is " + id + " and first adapter post title is "+firstViewChild.toString() + " and the first child of recycler is "+isChildNull + "ly null");
 
 
 
@@ -284,9 +240,6 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
-
-
 
     // Method to create a card. Refers to the method to create the internal layout of a card
     public CardView createCard(ConstraintLayout currentLayout, int i) {
@@ -328,7 +281,6 @@ public class MainActivity extends AppCompatActivity
         card.addView(insideLayout);
         return card;
     }
-
 
     // This method creates the layout that will go inside a CardView, given the required data
     public ConstraintLayout makeCardInside(final int cardid, final String title, final String type, final String society, final String desc) {
@@ -399,6 +351,7 @@ public class MainActivity extends AppCompatActivity
         insideLayout.addView(button);
         return insideLayout;
     }
+
 
 //    public void societySpecific(String society) {
 //        ConstraintLayout currentLayout = (ConstraintLayout) findViewById(R.id.cardViewLayout);
