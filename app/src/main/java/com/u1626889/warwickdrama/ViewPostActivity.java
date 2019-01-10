@@ -49,16 +49,24 @@ public class ViewPostActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        // Create the adapter that will return a fragment for each of the three
-        // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), MainActivity.idArr.size(), MainActivity.idArr,MainActivity.titleArr, MainActivity.typeArr, MainActivity.societyArr, MainActivity.contactArr, MainActivity.descArr);
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
         Intent intent = getIntent();
-        int firstNum = intent.getIntExtra("postNumber",MainActivity.idArr.get(0));
+        int firstNum = intent.getIntExtra("postNumber",0);
+
+        Bundle bundle = getIntent().getExtras();
+        ArrayList<Post> posts = bundle.getParcelable("posts");
+
+
+
+        // Create the adapter that will return a fragment for each of the three
+        // primary sections of the activity.
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), posts);
+
+
         mViewPager.setCurrentItem(firstNum);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -160,29 +168,31 @@ public class ViewPostActivity extends AppCompatActivity {
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         int postCount;
-        ArrayList<Integer> ids;
-        ArrayList<String> titles;
-        ArrayList<String> types;
-        ArrayList<String> socieites;
-        ArrayList<String> contacts;
-        ArrayList<String> descs;
+        ArrayList<Post> posts;
+//        ArrayList<Integer> ids;
+//        ArrayList<String> titles;
+//        ArrayList<String> types;
+//        ArrayList<String> socieites;
+//        ArrayList<String> contacts;
+//        ArrayList<String> descs;
 
-        public SectionsPagerAdapter(FragmentManager fm, int count, ArrayList<Integer> intarr, ArrayList<String> titlearr, ArrayList<String> typearr, ArrayList<String> societyarr, ArrayList<String> contactarr, ArrayList<String> descarr) {
+        public SectionsPagerAdapter(FragmentManager fm, ArrayList<Post> newPosts) {
             super(fm);
-            postCount = count;
-            ids = new ArrayList<Integer>(intarr);
-            titles = new ArrayList<String>(titlearr);
-            types = new ArrayList<String>(typearr);
-            socieites = new ArrayList<String>(societyarr);
-            contacts = new ArrayList<String>(contactarr);
-            descs= new ArrayList<String>(descarr);
+            posts = newPosts;
+//            postCount = count;
+//            ids = new ArrayList<Integer>(intarr);
+//            titles = new ArrayList<String>(titlearr);
+//            types = new ArrayList<String>(typearr);
+//            socieites = new ArrayList<String>(societyarr);
+//            contacts = new ArrayList<String>(contactarr);
+//            descs= new ArrayList<String>(descarr);
         }
 
         @Override
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1,postCount,titles.get(position),types.get(position),socieites.get(position),contacts.get(position),descs.get(position));
+            return PlaceholderFragment.newInstance(position + 1,posts.get(position).getId(),posts.get(position).getTitle(),posts.get(position).getType(),posts.get(position).getSociety(),posts.get(position).getOwner(),posts.get(position).getDesc());
         }
 
         @Override

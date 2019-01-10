@@ -58,11 +58,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("thing"," ");
-        Log.d("thing"," ");
-        Log.d("thing","NEW INSTANCE");
-        Log.d("thing"," ");
-        Log.d("thing"," ");
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -108,15 +103,13 @@ public class MainActivity extends AppCompatActivity
         mViewModel.getAllPosts().observe(this, new Observer<List<Post>>() {
             @Override
             public void onChanged(@Nullable List<Post> posts) {
-                adapter.setPosts(posts);
-                Log.d("thing","ONCREATE, there has been a change to the posts.");
+                adapter.setPosts(new ArrayList<Post>(posts));
                 adapter.notifyDataSetChanged();
             }
         });
 
         int i = adapter.getItemCount();
 
-        Log.d("thing", "ONCREATE, item count is "+i);
 
 //               THIS SHOULD BE DELETED WHEN THE DATABASE IS MADE, RIGHT NOW IT JUST ADDS THE NEWLY CREATED POST TO THE LIST, THE POST SHOULD NOW BE IN THE DATABASE ANYWAY
         Intent intent = getIntent();
@@ -217,21 +210,6 @@ public class MainActivity extends AppCompatActivity
 //            case "Warwick University Drama Society": societySpecific("WUDS");break;
 //            default: societySpecific("");break;
         }
-
-        // TODO - this is temp debugging
-        // the issue seems to be that the items are added to the database and added to the recycler view, but not properly.
-        // The recycler view has two things, but both ARE NULL
-        // THEY'RE NULL
-        RecyclerView recyclerView = findViewById(R.id.recyclerview);
-        PostListAdapter adapter = (PostListAdapter) recyclerView.getAdapter();
-        int i = adapter.getItemCount();
-        long id = adapter.getItemId(0);
-
-        View firstViewChild = recyclerView.getChildAt(0);
-        boolean isChildNull = (firstViewChild == null);
-        Log.d("thing", "OnNavItemSelected, item count is "+i + " and id 0 is " + id + " and first adapter post title is "+firstViewChild.toString() + " and the first child of recycler is "+isChildNull + "ly null");
-
-
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if(title.equals("Home")) toolbar.setTitle("Warwick Drama");
@@ -353,28 +331,28 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-//    public void societySpecific(String society) {
-//        ConstraintLayout currentLayout = (ConstraintLayout) findViewById(R.id.cardViewLayout);
-//        currentLayout.removeAllViews();
-//        mostRecentCardId = -1;
-//
-//        // The society is "" when the user clicks 'Home', so add all the posts
-//        if(society.equals("")) {
-//            for(int i = 0; i < idArr.size(); i++) {
-//                CardView card = createCard(currentLayout, i);
-//                currentLayout.addView(card);
-//            }
-//        } else {
-//            // Otherwise, only add posts which are part of the selected society
-//            for(int i = 0; i < idArr.size(); i++) {
-//                if(societyArr.get(i).equals(society)) {
-//                    CardView card = createCard(currentLayout, i);
-//                    // Finally, add the CardView in the correct layout
-//                    currentLayout.addView(card);
-//                }
-//            }
-//        }
-//
-//    }
+    public void societySpecific(String society) {
+        ConstraintLayout currentLayout = (ConstraintLayout) findViewById(R.id.cardViewLayout);
+        currentLayout.removeAllViews();
+        mostRecentCardId = -1;
+
+        // The society is "" when the user clicks 'Home', so add all the posts
+        if(society.equals("")) {
+            for(int i = 0; i < idArr.size(); i++) {
+                CardView card = createCard(currentLayout, i);
+                currentLayout.addView(card);
+            }
+        } else {
+            // Otherwise, only add posts which are part of the selected society
+            for(int i = 0; i < idArr.size(); i++) {
+                if(societyArr.get(i).equals(society)) {
+                    CardView card = createCard(currentLayout, i);
+                    // Finally, add the CardView in the correct layout
+                    currentLayout.addView(card);
+                }
+            }
+        }
+
+    }
 
 }

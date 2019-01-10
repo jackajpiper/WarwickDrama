@@ -3,10 +3,12 @@ package com.u1626889.warwickdrama;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
 @Entity(tableName = "post_table")
-public class Post {
+public class Post implements Parcelable {
     @PrimaryKey
     @NonNull
     @ColumnInfo(name = "id")
@@ -52,4 +54,46 @@ public class Post {
     public String getDesc(){return this.desc;}
     public String getTags(){return this.tags;}
     public String getExp_date(){return this.exp_date;}
+
+
+    // Implementing the parcelable methods so we can pass it in an intent
+    // We need to pass a list of the posts from PostListAdapter to ViewPostActivity
+
+    public int describeContents() {
+        return 0;
+    }
+
+    public void writeToParcel(Parcel out, int flags) {
+        out.writeInt(id);
+        out.writeString(title);
+        out.writeString(owner);
+        out.writeString(type);
+        out.writeString(society);
+        out.writeString(desc);
+        out.writeString(tags);
+        out.writeString(exp_date);
+    }
+
+    public static final Parcelable.Creator<Post> CREATOR
+            = new Parcelable.Creator<Post>() {
+        public Post createFromParcel(Parcel in) {
+            return new Post(in);
+        }
+
+        public Post[] newArray(int size) {
+            return new Post[size];
+        }
+    };
+
+    private Post(Parcel in) {
+        id = in.readInt();
+        title = in.readString();
+        owner = in.readString();
+        type = in.readString();
+        society = in.readString();
+        desc = in.readString();
+        tags = in.readString();
+        exp_date = in.readString();
+    }
+
 }

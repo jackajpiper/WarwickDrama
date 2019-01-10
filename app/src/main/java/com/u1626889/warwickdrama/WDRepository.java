@@ -4,7 +4,6 @@ import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.os.AsyncTask;
 import android.util.Log;
-
 import java.util.List;
 
 public class WDRepository {
@@ -37,7 +36,6 @@ public class WDRepository {
         @Override
         protected Void doInBackground(final Post... params) {
             mAsyncTaskDao.insert(params[0]);
-            Log.d("thing", "In the repository, item is added");
             return null;
         }
 
