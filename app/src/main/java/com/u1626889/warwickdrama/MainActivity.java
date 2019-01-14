@@ -34,6 +34,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.LinearLayout.LayoutParams;
 import android.graphics.Color;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -51,6 +52,9 @@ public class MainActivity extends AppCompatActivity
     public ArrayList<Integer> getIds() {
         return idArr;
     }
+
+    // This is for the onActivityResult method working with newly user created posts
+    public static final int NEW_POST_ACTIVITY_REQUEST_CODE = 1;
 
     // The interface through which we access the database
     private WDViewModel mViewModel;
@@ -108,53 +112,26 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        int i = adapter.getItemCount();
-
-
-//               THIS SHOULD BE DELETED WHEN THE DATABASE IS MADE, RIGHT NOW IT JUST ADDS THE NEWLY CREATED POST TO THE LIST, THE POST SHOULD NOW BE IN THE DATABASE ANYWAY
-        Intent intent = getIntent();
-        if(intent.getStringExtra("title")!=null) {
-            int id = intent.getIntExtra("id",0);
-            String title = intent.getStringExtra("title");
-            String contact = intent.getStringExtra("contact");
-            String date = intent.getStringExtra("date");
-            String description = intent.getStringExtra("description");
-            String society = intent.getStringExtra("society");
-            String type = intent.getStringExtra("type");
-            String[] tags = intent.getStringArrayExtra("tags");
-            idArr.add(id);
-            titleArr.add(title);
-            typeArr.add(type);
-            societyArr.add(society);
-            descArr.add(description);
-            expandArr.add(false);
-        }
-
-//        for(int i = 0; i < idArr.size(); i++) {
-//            final int num = i;
-//            ConstraintLayout currentLayout = (ConstraintLayout) findViewById(R.id.cardViewLayout);
-//            CardView card = createCard(currentLayout, i);
-//            // Add an onclick listener to view the post in full
-//
-//            card.setOnClickListener(new View.OnClickListener() {
-//                @Override public void onClick(View v) {
-//                    Intent intent = new Intent(MainActivity.this, ViewPostActivity.class);
-//                    intent.putExtra("postNumber", num);
-//                    startActivity(intent);
-//                }
-//            });
-//            // Finally, add the CardView in the correct layout
-//            currentLayout.addView(card);
-//        }
 
     }
 
     // TODO - this should run when the reply activity returns with the data for a new post
     // see https://codelabs.developers.google.com/codelabs/android-room-with-a-view/#11
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        Post
-//    }
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        Log.d("thing", "Boom, just got back from a leet create view thing");
+        if (requestCode == NEW_POST_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
+            Post post = new Post(data.getIntExtra("id", 0), data.getStringExtra("title"), data.getStringExtra("contact"), data.getStringExtra("type"), data.getStringExtra("society"), data.getStringExtra("description"), data.getStringExtra("tags"), data.getStringExtra("date"));
+            mViewModel.insert(post);
+            Log.d("thing", "Adding post "+post.getTitle());
+        } else {
+            Toast.makeText(
+                    getApplicationContext(),
+                    "Empty. Not saved.",
+                    Toast.LENGTH_LONG).show();
+        }
+    }
 
     @Override
     public void onBackPressed() {
@@ -197,7 +174,7 @@ public class MainActivity extends AppCompatActivity
 
             case "Create a note":
                 Intent intent = new Intent(this, CreatePostActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent, NEW_POST_ACTIVITY_REQUEST_CODE);
                 break;
                 // TODO there are a bunch of these commented out sections - replace them as necessary
 //            case "Codpeice": societySpecific("Codpeice");break;

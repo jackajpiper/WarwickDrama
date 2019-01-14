@@ -20,6 +20,7 @@ public class CreatePost2Activity extends AppCompatActivity {
 
     public ArrayList<String> placeholder_tags;
     ArrayAdapter<String> arrayAdapter;
+//    public static final String EXTRA_REPLY = "com.example.android.wordlistsql.REPLY";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,17 +70,29 @@ public class CreatePost2Activity extends AppCompatActivity {
         }
         Log.d("thing","title are "+title);
 
-        intent = new Intent(this, MainActivity.class);
-        int newId = View.generateViewId();
-        intent.putExtra("id",newId);
-        intent.putExtra("title", title);
-        intent.putExtra("contact", contact);
-        intent.putExtra("date", date);
-        intent.putExtra("description", description);
-        intent.putExtra("society", society);
-        intent.putExtra("type", type);
-        intent.putExtra("tags", tags);
-        startActivity(intent);
+//        intent = new Intent(this, MainActivity.class);
+
+//        startActivity(intent);
+
+        // Composes a reply intent and
+        Intent replyIntent = new Intent();
+        if (tags.size() == 0) {
+            // TODO - Finish adding validation to the user input
+            setResult(RESULT_CANCELED, replyIntent);
+        } else {
+            int newId = View.generateViewId();
+            replyIntent.putExtra("id",newId);
+            replyIntent.putExtra("title", title);
+            replyIntent.putExtra("contact", contact);
+            replyIntent.putExtra("date", date);
+            replyIntent.putExtra("description", description);
+            replyIntent.putExtra("society", society);
+            replyIntent.putExtra("type", type);
+            replyIntent.putExtra("tags", tags);
+            setResult(RESULT_OK, replyIntent);
+            Log.d("thing", "Packing the CreatePost2Activity reply with data");
+        }
+        finish();
 
 
 

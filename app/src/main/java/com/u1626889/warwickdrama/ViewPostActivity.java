@@ -46,50 +46,25 @@ public class ViewPostActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_post);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         Intent intent = getIntent();
         int firstNum = intent.getIntExtra("postNumber",0);
-
-        Bundle bundle = getIntent().getExtras();
-        ArrayList<Post> posts = bundle.getParcelable("posts");
+        ArrayList<Post> posts = intent.getParcelableArrayListExtra("post");
 
 
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), posts);
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), posts, firstNum);
 
-
+        // Set up the ViewPager with the sections adapter.
+        mViewPager = (ViewPager) findViewById(R.id.container);
+        mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.setCurrentItem(firstNum);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
-        // TODO: implement 'saved' functionality from here
-//        final ImageView save_button = findViewById(R.id.imageView3);
-//        save_button.setImageResource(R.drawable.ic_unsave);
-//        final boolean saved = false;
-//        save_button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if(saved) {
-//                    save_button.setImageResource(R.drawable.ic_save);
-//                }
-//            }
-//        });
 
     }
 
@@ -143,6 +118,18 @@ public class ViewPostActivity extends AppCompatActivity {
             TextView titleText = (TextView) rootView.findViewById(R.id.titleText);
             TextView contactText = (TextView) rootView.findViewById(R.id.contactText);
             TextView descText = (TextView) rootView.findViewById(R.id.descText);
+            final FloatingActionButton fab = rootView.findViewById(R.id.floatingActionButton);
+//            postFAB.setImageResource(R.drawable.ic_unsave);
+
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // TODO: implement 'saved' functionality from here
+                    Snackbar.make(view, "Saved! (Replace with your own action)", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+                    fab.setImageResource(R.drawable.ic_save);
+                }
+            });
 
             int id = getArguments().getInt(ARG_ID);
             String title = getArguments().getString(ARG_TITLE);
@@ -176,10 +163,10 @@ public class ViewPostActivity extends AppCompatActivity {
 //        ArrayList<String> contacts;
 //        ArrayList<String> descs;
 
-        public SectionsPagerAdapter(FragmentManager fm, ArrayList<Post> newPosts) {
+        public SectionsPagerAdapter(FragmentManager fm, ArrayList<Post> newPosts, int count) {
             super(fm);
             posts = newPosts;
-//            postCount = count;
+            postCount = count+1;
 //            ids = new ArrayList<Integer>(intarr);
 //            titles = new ArrayList<String>(titlearr);
 //            types = new ArrayList<String>(typearr);
@@ -192,12 +179,11 @@ public class ViewPostActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            return PlaceholderFragment.newInstance(position + 1,posts.get(position).getId(),posts.get(position).getTitle(),posts.get(position).getType(),posts.get(position).getSociety(),posts.get(position).getOwner(),posts.get(position).getDesc());
+            return PlaceholderFragment.newInstance(position+1,posts.get(position).getId(),posts.get(position).getTitle(),posts.get(position).getType(),posts.get(position).getSociety(),posts.get(position).getOwner(),posts.get(position).getDesc());
         }
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
             return postCount;
         }
     }

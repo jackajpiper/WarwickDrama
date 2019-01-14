@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,7 +31,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
             postItemView = itemView.findViewById(R.id.titleText);
             postDescView = itemView.findViewById(R.id.descText);
             postImageView = itemView.findViewById(R.id.imageView2);
-//            Log.d("thing","I'm in the PostViewHolder class constructor. thing is "+ postItemView.getText());
+
         }
     }
 
@@ -50,10 +52,8 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
         if (mPosts != null) {
             final Post current = mPosts.get(position);
             holder.postItemView.setText(current.getTitle()); // THIS IS WHAT'S DISPLAYED IN THE CARD
-            Log.d("thing","Setting the onclick listener");
             holder.postImageView.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    Log.d("thing","BIG. YEET. text is '"+holder.postDescView.getText()+"'");
                     if(holder.postDescView.getText().equals("")) {
                         ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) holder.postDescView.getLayoutParams();
                         params.height = 200;
@@ -72,14 +72,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
                 @Override public void onClick(View v) {
                     Intent intent = new Intent(v.getContext(), ViewPostActivity.class);
                     intent.putExtra("postNumber", holder.getAdapterPosition());
-
-                    Bundle bundle = new Bundle();
-                    bundle.putParcelableArrayList("posts", getPosts());
-
-                    boolean thing = getPosts()dickchaneymademoneyofftheiraqwar==null;
-
-                    Log.d("thing","Touchdown! "+thing);
-                    intent.putExtras(bundle);
+                    intent.putParcelableArrayListExtra("post", getPosts());
                     v.getContext().startActivity(intent);
                 }
             });

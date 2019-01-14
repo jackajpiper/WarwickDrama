@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -16,6 +17,9 @@ import java.util.Calendar;
 import java.util.Locale;
 
 public class CreatePostActivity extends AppCompatActivity {
+
+    // This is for the onActivityResult method working with newly user created posts
+    public static final int NEW_POST_ACTIVITY_REQUEST_CODE = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +76,7 @@ public class CreatePostActivity extends AppCompatActivity {
     /** Called when the user taps the Send button */
     // CARRIES ALL OF THE DATA FROM THE FIRST CREATE POST ACTIVITY
     public void progress(View view) {
-        Intent intent = new Intent(this, CreatePost2Activity.class);
+//        Intent intent = new Intent(this, CreatePost2Activity.class);
         EditText titleText = (EditText) findViewById(R.id.title_text);
         EditText contactText = (EditText) findViewById(R.id.contact_text);
         EditText dateText = (EditText) findViewById(R.id.dateText);
@@ -87,13 +91,37 @@ public class CreatePostActivity extends AppCompatActivity {
         String society = societySpinner.getSelectedItem().toString();
         String type = typeSpinner.getSelectedItem().toString();
 
-        intent.putExtra("title", title);
-        intent.putExtra("contact", contact);
-        intent.putExtra("date", date);
-        intent.putExtra("description", description);
-        intent.putExtra("society", society);
-        intent.putExtra("type", type);
-        startActivity(intent);
+//        intent.putExtra("title", title);
+//        intent.putExtra("contact", contact);
+//        intent.putExtra("date", date);
+//        intent.putExtra("description", description);
+//        intent.putExtra("society", society);
+//        intent.putExtra("type", type);
+
+        Intent replyIntent = new Intent();
+        if (false) {
+            // TODO - Finish adding validation to the user input
+            setResult(RESULT_CANCELED, replyIntent);
+        } else {
+            int newId = View.generateViewId();
+            replyIntent.putExtra("id",newId);
+            replyIntent.putExtra("title", title);
+            replyIntent.putExtra("contact", contact);
+            replyIntent.putExtra("date", date);
+            replyIntent.putExtra("description", description);
+            replyIntent.putExtra("society", society);
+            replyIntent.putExtra("type", type);
+            replyIntent.putExtra("tags", "this,that");
+            
+            Intent intent = new Intent(this, CreatePost2Activity.class);
+
+            setResult(RESULT_OK, replyIntent);
+            Log.d("thing", "Packing the CreatePost2Activity reply with data");
+        }
+        finish();
+
+
+//        startActivity(intent);
     }
 
 
