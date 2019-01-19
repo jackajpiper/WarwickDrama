@@ -49,15 +49,15 @@ public class MainActivity extends AppCompatActivity
     // This allows the following cardview to chain itself under it
     public int mostRecentCardId;
 
-    public ArrayList<Integer> getIds() {
-        return idArr;
-    }
-
     // This is for the onActivityResult method working with newly user created posts
     public static final int NEW_POST_ACTIVITY_REQUEST_CODE = 1;
 
+    private ArrayList<Post> allPosts;
+
     // The interface through which we access the database
     private WDViewModel mViewModel;
+    // The adapter that contains the posts displayed in the recycler view
+    private PostListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,13 +76,10 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-
 //        TRYING THIS DATABASE THING, HERE GOES
-
-        // TWO THINGS ARE ADDED TO THE DATABASE BUT THEY ARE NULL
-
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
-        final PostListAdapter adapter = new PostListAdapter(this);
+        adapter = new PostListAdapter(this);
+        Log.d("thing","CREATING A NEW ADAPTER");
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
 
         // Makes the divider to go between the items in the recycler view, change the gap by editing the method
@@ -177,15 +174,15 @@ public class MainActivity extends AppCompatActivity
                 startActivityForResult(intent, NEW_POST_ACTIVITY_REQUEST_CODE);
                 break;
                 // TODO there are a bunch of these commented out sections - replace them as necessary
-//            case "Codpeice": societySpecific("Codpeice");break;
-//            case "Freshblood": societySpecific("Freshblood");break;
-//            case "Musical Theatre Warwick": societySpecific("MTW");break;
-//            case "Opera Warwick": societySpecific("OpWa");break;
-//            case "ShakeSoc": societySpecific("ShakeSoc");break;
-//            case "Tech Crew": societySpecific("TechCrew");break;
-//            case "Warwick Improvised Theatre Society": societySpecific("WITS");break;
-//            case "Warwick University Drama Society": societySpecific("WUDS");break;
-//            default: societySpecific("");break;
+            case "Codpeice": adapter.getFilter().filter("Codpeice");break;
+            case "Freshblood": adapter.getFilter().filter("Freshblood");break;
+            case "Musical Theatre Warwick": adapter.getFilter().filter("MTW");break;
+            case "Opera Warwick": adapter.getFilter().filter("Opera Warwick");break;
+            case "ShakeSoc": adapter.getFilter().filter("ShakeSoc");break;
+            case "Tech Crew": adapter.getFilter().filter("Tech Crew");break;
+            case "Warwick Improvised Theatre Society": adapter.getFilter().filter("WITS");break;
+            case "Warwick University Drama Society": adapter.getFilter().filter("WUDS");break;
+            default: adapter.getFilter().filter("");break;
         }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -313,21 +310,30 @@ public class MainActivity extends AppCompatActivity
         currentLayout.removeAllViews();
         mostRecentCardId = -1;
 
+        if(allPosts == null) {
+            allPosts = adapter.getPosts();
+        }
+
         // The society is "" when the user clicks 'Home', so add all the posts
         if(society.equals("")) {
-            for(int i = 0; i < idArr.size(); i++) {
-                CardView card = createCard(currentLayout, i);
-                currentLayout.addView(card);
-            }
+            adapter.setPosts(allPosts);
+            adapter.notifyDataSetChanged();
         } else {
             // Otherwise, only add posts which are part of the selected society
-            for(int i = 0; i < idArr.size(); i++) {
-                if(societyArr.get(i).equals(society)) {
-                    CardView card = createCard(currentLayout, i);
-                    // Finally, add the CardView in the correct layout
-                    currentLayout.addView(card);
+            ArrayList<Post> newPosts = new ArrayList<>();
+            for(int i = 0; i < allPosts.size(); i++) {
+                if(allPosts.get(i).getSociety().equals(society)) {
+                    newPosts.add(allPosts.get(i));
                 }
             }
+            adapter.setPosts(newPosts);
+            adapter.notifyDataSetChanged();
+        }
+        Log.d("thing","society is "+society+" and count is "+adapter.getItemCount());
+        Log.d("thing","list is ");
+        ArrayList<Post> listof = adapter.getPosts();
+        for(int i = 0; i < listof.size(); i++) {
+            Log.d("thing",listof.get(i).getTitle());
         }
 
     }
