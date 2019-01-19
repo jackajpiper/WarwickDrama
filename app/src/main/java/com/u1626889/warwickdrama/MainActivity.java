@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity
         if (requestCode == NEW_POST_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
             Post post = new Post(data.getIntExtra("id", 0), data.getStringExtra("title"), data.getStringExtra("contact"), data.getStringExtra("type"), data.getStringExtra("society"), data.getStringExtra("description"), data.getStringExtra("tags"), data.getStringExtra("date"));
             mViewModel.insert(post);
-            Log.d("thing", "Adding post "+post.getTitle());
+            Log.d("thing", "Adding post with tags "+post.getTags());
         } else {
             Toast.makeText(
                     getApplicationContext(),
