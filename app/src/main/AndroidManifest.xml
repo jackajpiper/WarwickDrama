@@ -27,7 +27,6 @@
         <activity
             android:name=".CreatePostActivity"
             android:label="Create a post"
-            android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"

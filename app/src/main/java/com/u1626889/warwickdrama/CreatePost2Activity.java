@@ -55,20 +55,15 @@ public class CreatePost2Activity extends AppCompatActivity {
     }
 
     public void postPostData(View view) {
-        Intent intent = getIntent();
-        String title = intent.getStringExtra("title");
-        String contact = intent.getStringExtra("contact");
-        String date = intent.getStringExtra("date");
-        String description = intent.getStringExtra("description");
-        String society = intent.getStringExtra("society");
-        String type = intent.getStringExtra("type");
 
 //        ListView lv = (ListView) findViewById(R.id.tag_list);
-        ArrayList<String> tags = new ArrayList<String>();
+        ArrayList<String> tagsArr = new ArrayList<String>();
         for (int i=0;i<arrayAdapter.getCount();i++){
-            tags.add(arrayAdapter.getItem(i));
+            tagsArr.add(arrayAdapter.getItem(i));
         }
-        Log.d("thing","title are "+title);
+
+        // OOOOH what a nice function. I found this on stack overflow and said 'oooo nice' out loud
+        String tags = android.text.TextUtils.join(",", tagsArr);
 
 //        intent = new Intent(this, MainActivity.class);
 
@@ -76,25 +71,15 @@ public class CreatePost2Activity extends AppCompatActivity {
 
         // Composes a reply intent and
         Intent replyIntent = new Intent();
-        if (tags.size() == 0) {
+        if (tagsArr.size() == 0) {
             // TODO - Finish adding validation to the user input
             setResult(RESULT_CANCELED, replyIntent);
         } else {
-            int newId = View.generateViewId();
-            replyIntent.putExtra("id",newId);
-            replyIntent.putExtra("title", title);
-            replyIntent.putExtra("contact", contact);
-            replyIntent.putExtra("date", date);
-            replyIntent.putExtra("description", description);
-            replyIntent.putExtra("society", society);
-            replyIntent.putExtra("type", type);
             replyIntent.putExtra("tags", tags);
             setResult(RESULT_OK, replyIntent);
-            Log.d("thing", "Packing the CreatePost2Activity reply with data");
+            Log.d("thing", "Packing the CreatePost2Activity reply with data, ZOOMIN back to to the first create activity");
         }
         finish();
-
-
 
     }
 
