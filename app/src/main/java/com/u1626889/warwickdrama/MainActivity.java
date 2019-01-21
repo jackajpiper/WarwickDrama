@@ -104,6 +104,7 @@ public class MainActivity extends AppCompatActivity
         mViewModel.getAllPosts().observe(this, new Observer<List<Post>>() {
             @Override
             public void onChanged(@Nullable List<Post> posts) {
+                Collections.sort(posts, new PostComparator());
                 adapter.setPosts(new ArrayList<Post>(posts));
                 adapter.notifyDataSetChanged();
             }
