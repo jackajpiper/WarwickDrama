@@ -19,7 +19,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostViewHolder> implements Filterable {
+public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostViewHolder> {
 
     class PostViewHolder extends RecyclerView.ViewHolder {
         private final TextView postItemView;
@@ -38,21 +38,15 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
     }
 
     private final LayoutInflater mInflator;
-    private ArrayList<Post> mPosts; // Cached copy of the posts
+    private ArrayList<Post> mPostsCache; // Cached copy of the posts
+    private ArrayList<Post> mPosts;
     private ArrayList<Post> filteredPosts;
-    private PostFilter postFilter;
 
     PostListAdapter(Context context) {
         mInflator = LayoutInflater.from(context);
         mPosts = new ArrayList<Post>();
         filteredPosts = new ArrayList<Post>();
-    }
-
-    @Override
-    public Filter getFilter() {
-        if(postFilter == null)
-            postFilter = new PostFilter(this, mPosts);
-        return postFilter;
+        mPostsCache = new ArrayList<Post>();
     }
 
     @Override
@@ -101,6 +95,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
 
     void setPosts(ArrayList<Post> posts) {
         mPosts = posts;
+        mPostsCache = new ArrayList<>(mPosts);
         notifyDataSetChanged();
     }
 
@@ -121,56 +116,22 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
         return mPosts;
     }
 
-
-
-    public class PostFilter extends Filter {
-
-        private final PostListAdapter adapter;
-
-        private final ArrayList<Post> originalList;
-
-        private final ArrayList<Post> filteredList;
-
-        private PostFilter(PostListAdapter adapter, ArrayList<Post> originalList) {
-            super();
-            this.adapter = adapter;
-            this.originalList = new ArrayList<Post>(originalList);
-            this.filteredList = new ArrayList<>();
+    public void filter(String text) {
+        Log.d("thing","calling filter. Is it happening multiple times?");
+        mPosts.clear();
+        if(text.equals("")) {
+            mPosts.addAll(mPostsCache);
         }
-
-        @Override
-        protected FilterResults performFiltering(CharSequence constraint) {
-            filteredList.clear();
-            final FilterResults results = new FilterResults();
-
-            if (constraint.length() == 0) {
-                filteredList.addAll(originalList);
-            } else {
-                final String filterPattern = constraint.toString();
-
-                for (final Post post : originalList) {
-                    if (post.getSociety().contains(filterPattern)) {
-                        Log.d("thing","MATCH "+filterPattern);
-                        filteredList.add(post);
-                    }
+        else {
+            for(Post post : mPostsCache) {
+                if(post.getSociety().equals(text)) {
+                    mPosts.add(post);
+                    Log.d("thing", "adding ONE post with id "+post.getId());
                 }
             }
-            results.values = filteredList;
-            results.count = filteredList.size();
-            for(int i = 0; i < filteredList.size()+1; i++) {
-                Log.d("thing",filteredList.get(i).getTitle());
-            }
-            Log.d("thing","filtered list "+filteredList.size());
-            return results;
         }
-
-        @Override
-        protected void publishResults(CharSequence constraint, FilterResults results) {
-            adapter.filteredPosts.clear();
-            adapter.filteredPosts.addAll((ArrayList<Post>) results.values);
-            adapter.notifyDataSetChanged();
-        }
-
+        notifyDataSetChanged();
     }
+
 
 }

@@ -174,15 +174,15 @@ public class MainActivity extends AppCompatActivity
                 startActivityForResult(intent, NEW_POST_ACTIVITY_REQUEST_CODE);
                 break;
                 // TODO there are a bunch of these commented out sections - replace them as necessary
-            case "Codpeice": adapter.getFilter().filter("Codpeice");break;
-            case "Freshblood": adapter.getFilter().filter("Freshblood");break;
-            case "Musical Theatre Warwick": adapter.getFilter().filter("MTW");break;
-            case "Opera Warwick": adapter.getFilter().filter("Opera Warwick");break;
-            case "ShakeSoc": adapter.getFilter().filter("ShakeSoc");break;
-            case "Tech Crew": adapter.getFilter().filter("Tech Crew");break;
-            case "Warwick Improvised Theatre Society": adapter.getFilter().filter("WITS");break;
-            case "Warwick University Drama Society": adapter.getFilter().filter("WUDS");break;
-            default: adapter.getFilter().filter("");break;
+            case "Codpeice": adapter.filter("Codpeice");break;
+            case "Freshblood": adapter.filter("Freshblood");break;
+            case "Musical Theatre Warwick": adapter.filter("MTW");break;
+            case "Opera Warwick": adapter.filter("Opera Warwick");break;
+            case "ShakeSoc": adapter.filter("ShakeSoc");break;
+            case "Tech Crew": adapter.filter("Tech Crew");break;
+            case "Warwick Improvised Theatre Society": adapter.filter("WITS");break;
+            case "Warwick University Drama Society": adapter.filter("WUDS");break;
+            default: adapter.filter("");break;
         }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
