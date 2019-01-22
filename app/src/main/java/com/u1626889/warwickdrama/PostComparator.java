@@ -20,11 +20,13 @@ public class PostComparator implements java.util.Comparator<Post>{
 // ---------------------- THIS IS WHERE THE RECOMMENDATION COMPARISON HAPPENS ----------------------
 
         SharedPreferences prefs = context.getSharedPreferences("user_tags",0);
-        String tags = prefs.getString("user_tags","");
+        String tags = prefs.getString("user_tags","").toLowerCase();
 
+        String post1tags = post1.getTags().toLowerCase();
+        String post2tags = post2.getTags().toLowerCase();
 
-        int score1 = tagsCompare(post1.getTags(), tags);
-        int score2 = tagsCompare(post2.getTags(), tags);
+        int score1 = tagsCompare(post1tags, tags);
+        int score2 = tagsCompare(post2tags, tags);
 
         if(score1 > score2) return -1;
         else if(score1 < score2) return 1;
