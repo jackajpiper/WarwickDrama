@@ -1,38 +1,41 @@
 package com.u1626889.warwickdrama;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import android.util.Log;
 
-
-public class CreatePost2Activity extends AppCompatActivity {
+public class EditTagsActivity extends AppCompatActivity {
 
     public ArrayList<String> placeholder_tags;
     ArrayAdapter<String> arrayAdapter;
-//    public static final String EXTRA_REPLY = "com.example.android.wordlistsql.REPLY";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_create_post2);
+        setContentView(R.layout.content_edit_tags);
 
-        final ListView lv = (ListView) findViewById(R.id.tag_list);
-        String placeholder_tags_string = "drama";
-        placeholder_tags = new ArrayList<String>(Arrays.asList(placeholder_tags_string.split(",")));
 
-        Log.d("thing","is it null? "+placeholder_tags);
-        // TURNS THE TAG STRING INTO A LIST AND ADD IT TO THE LISTVIEW
+
+        final ListView lv = findViewById(R.id.tag_list);
+
+        SharedPreferences prefs = getSharedPreferences("user_tags",0);
+        String tags = prefs.getString("user_tags","");
+        placeholder_tags = new ArrayList<String>(Arrays.asList(tags.split(",")));
+
 
         // Create an ArrayAdapter from List
         arrayAdapter = new ArrayAdapter<String>
@@ -52,30 +55,7 @@ public class CreatePost2Activity extends AppCompatActivity {
         });
 
 
-    }
-
-    public void postPostData(View view) {
-
-//        ListView lv = (ListView) findViewById(R.id.tag_list);
-        ArrayList<String> tagsArr = new ArrayList<String>();
-        for (int i=0;i<arrayAdapter.getCount();i++){
-            tagsArr.add(arrayAdapter.getItem(i));
-        }
-
-        // OOOOH what a nice function. I found this on stack overflow and said 'oooo nice' out loud
-        String tags = android.text.TextUtils.join(",", tagsArr);
-
-        // Composes a reply intent and
-        Intent replyIntent = new Intent();
-        if (tagsArr.size() == 0) {
-            // TODO - Finish adding validation to the user input
-            setResult(RESULT_CANCELED, replyIntent);
-        } else {
-            replyIntent.putExtra("tags", tags);
-            setResult(RESULT_OK, replyIntent);
-            Log.d("thing", "Packing the CreatePost2Activity reply with data, ZOOMIN back to to the first create activity");
-        }
-        finish();
+//        Log.d("thing", "theeeese tags are "+arrayAdapter.getItem(0)+", "+arrayAdapter.getItem(1));
 
     }
 
@@ -90,6 +70,27 @@ public class CreatePost2Activity extends AppCompatActivity {
 
             tagText.setText("");
         }
+    }
+
+    public void updateTags(View view) {
+
+        ArrayList<String> tagsArr = new ArrayList<String>();
+        for (int i=0;i<arrayAdapter.getCount();i++){
+            tagsArr.add(arrayAdapter.getItem(i));
+        }
+
+        String tags = android.text.TextUtils.join(",", tagsArr);
+
+        // Composes a reply intent and
+        Intent replyIntent = new Intent();
+        if (tagsArr.size() == 0) {
+            // TODO - Finish adding validation to the user input
+            setResult(RESULT_CANCELED, replyIntent);
+        } else {
+            replyIntent.putExtra("new_tags", tags);
+            setResult(RESULT_OK, replyIntent);
+        }
+        finish();
     }
 
 }

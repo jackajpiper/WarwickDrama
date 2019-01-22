@@ -133,5 +133,4 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
         notifyDataSetChanged();
     }
 
-
 }

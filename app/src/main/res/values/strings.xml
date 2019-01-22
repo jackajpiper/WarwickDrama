@@ -28,5 +28,6 @@
     </string-array>
     <string name="title_activity_view_post">ViewPostActivity</string>
     <string name="section_format">Hello World from section: %1$d</string>
+    <string name="title_activity_edit_tags">EditTagsActivity</string>
 
 </resources>

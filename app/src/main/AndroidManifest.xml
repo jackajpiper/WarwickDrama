@@ -48,6 +48,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.u1626889.warwickdrama.MainActivity" />
         </activity>
+        <activity
+            android:name=".EditTagsActivity"
+            android:label="@string/title_activity_edit_tags"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.u1626889.warwickdrama.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

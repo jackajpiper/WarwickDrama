@@ -6,6 +6,7 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Rect;
 import android.media.Image;
 import android.os.Bundle;
@@ -51,6 +52,7 @@ public class MainActivity extends AppCompatActivity
 
     // This is for the onActivityResult method working with newly user created posts
     public static final int NEW_POST_ACTIVITY_REQUEST_CODE = 1;
+    public static final int EDIT_TAGS_ACTIVITY_REQUEST_CODE = 7;
 
     private ArrayList<Post> allPosts;
 
@@ -104,7 +106,7 @@ public class MainActivity extends AppCompatActivity
         mViewModel.getAllPosts().observe(this, new Observer<List<Post>>() {
             @Override
             public void onChanged(@Nullable List<Post> posts) {
-                Collections.sort(posts, new PostComparator());
+                Collections.sort(posts, new PostComparator(getApplicationContext()));
                 adapter.setPosts(new ArrayList<Post>(posts));
                 adapter.notifyDataSetChanged();
             }
@@ -123,10 +125,36 @@ public class MainActivity extends AppCompatActivity
             Post post = new Post(data.getIntExtra("id", 0), data.getStringExtra("title"), data.getStringExtra("contact"), data.getStringExtra("type"), data.getStringExtra("society"), data.getStringExtra("description"), data.getStringExtra("tags"), data.getStringExtra("date"));
             mViewModel.insert(post);
             Log.d("thing", "Adding post with tags "+post.getTags());
-        } else {
+        } else if (requestCode == EDIT_TAGS_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK){
+
+            String tags = data.getStringExtra("new_tags");
+
+
+            //  PUTS THE USER'S TAGS INTO THE APP'S DATA SO IT CAN BE REFERENCED ELSEWHERE IN THE APP
+            SharedPreferences prefs = getSharedPreferences("user_tags",0);
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putString("user_tags",tags).commit();
+
+            ArrayList<Post> newsorted = new ArrayList<>(adapter.getPosts());
+
+            Log.d("thing","before update, ");
+            for(int i = 0; i < newsorted.size(); i++) {
+                Log.d("thing",newsorted.get(i).getTitle());
+            }
+
+            Collections.sort(newsorted, new PostComparator(getApplicationContext()));
+
+            Log.d("thing","after update, ");
+            for(int i = 0; i < newsorted.size(); i++) {
+                Log.d("thing",newsorted.get(i).getTitle());
+            }
+
+            adapter.setPosts(newsorted);
+            adapter.notifyDataSetChanged();
+
             Toast.makeText(
                     getApplicationContext(),
-                    "Empty. Not saved.",
+                    "Tags updated!",
                     Toast.LENGTH_LONG).show();
         }
     }
@@ -173,6 +201,10 @@ public class MainActivity extends AppCompatActivity
             case "Create a note":
                 Intent intent = new Intent(this, CreatePostActivity.class);
                 startActivityForResult(intent, NEW_POST_ACTIVITY_REQUEST_CODE);
+                break;
+            case "Edit your tags":
+                Intent tagsintent = new Intent(this, EditTagsActivity.class);
+                startActivityForResult(tagsintent, EDIT_TAGS_ACTIVITY_REQUEST_CODE);
                 break;
                 // TODO there are a bunch of these commented out sections - replace them as necessary
             case "Codpeice": adapter.filter("Codpeice");break;
