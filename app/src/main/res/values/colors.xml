@@ -5,4 +5,6 @@
     <color name="colorAccent">#D81B60</color>
     <color name="cardViewColor">#09a398</color>
     <color name="black">#bfbfbf</color>
+    <color name="postCard">#86608e</color>
+    <color name="postsDivider">#F7F9E0</color>
 </resources>

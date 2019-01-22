@@ -97,7 +97,9 @@ public class MainActivity extends AppCompatActivity
             }
         };
 
-        recyclerView.addItemDecoration(dividerItemDecoration);
+        PostDividerItemDecoration divider = new PostDividerItemDecoration(recyclerView.getContext(),R.drawable.post_divider);
+
+//        recyclerView.addItemDecoration(divider);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
 
@@ -339,7 +341,7 @@ public class MainActivity extends AppCompatActivity
 
 
     public void societySpecific(String society) {
-        ConstraintLayout currentLayout = (ConstraintLayout) findViewById(R.id.cardViewLayout);
+        ConstraintLayout currentLayout = (ConstraintLayout) findViewById(R.id.holdingRecyclerView);
         currentLayout.removeAllViews();
         mostRecentCardId = -1;
 
