@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
-    <color name="cardViewColor">#09a398</color>
+    <color name="colorPrimary">#624568</color>
+    <color name="colorPrimaryDark">#453049</color>
+    <color name="colorAccent">#F7F9E0</color>
     <color name="black">#bfbfbf</color>
-    <color name="postCard">#86608e</color>
+    <color name="postCard">#a575af</color>
     <color name="postsDivider">#F7F9E0</color>
 </resources>

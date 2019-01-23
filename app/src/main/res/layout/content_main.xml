@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/postsDivider"
     xmlns:tools="http://schemas.android.com/tools">
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
@@ -26,6 +27,9 @@
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recyclerview"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:clipToPadding="false"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_marginTop="56dp"
