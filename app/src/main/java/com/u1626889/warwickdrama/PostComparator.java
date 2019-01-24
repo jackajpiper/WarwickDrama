@@ -25,15 +25,13 @@ public class PostComparator implements java.util.Comparator<Post>{
         tags = stemSentence(tags);
 
         String post1desc = post1.getDesc().toLowerCase();
-        post1desc = stemSentence(post1desc);
         String post2desc = post2.getDesc().toLowerCase();
-        post2desc = stemSentence(post2desc);
 
         String post1tags = post1.getTags().toLowerCase();
         String post2tags = post2.getTags().toLowerCase();
 
-        int score1 = tagsCompare(post1desc, tags);
-        int score2 = tagsCompare(post2desc, tags);
+        int score1 = tagsCompare(post1desc, tags) + tagsCompare(post1tags, tags);
+        int score2 = tagsCompare(post2desc, tags) + tagsCompare(post2tags, tags);
 
 //        String leet = stemSentence("Hello, I'm jack! absolutely lovely to meet you, today we're going to replacing you without yeet");
 
@@ -49,11 +47,15 @@ public class PostComparator implements java.util.Comparator<Post>{
     }
 
     public int tagsCompare(String t1, String t2) {
-        ArrayList<String> first = new ArrayList<>(Arrays.asList(t1.split(",")));
-        ArrayList<String> second = new ArrayList<>(Arrays.asList(t2.split(",")));
+
+        t1 = stemSentence(t1);
+        t2 = stemSentence(t2);
+
+        ArrayList<String> first = new ArrayList<>(Arrays.asList(t1.split(" ")));
+        ArrayList<String> second = new ArrayList<>(Arrays.asList(t2.split(" ")));
 
         Log.d("thing","first is "+first.toString());
-        Log.d("thing","second is '"+second.get(0)+"'");
+        Log.d("thing","second is '"+second.toString());
 
         int score = 0;
 
@@ -106,14 +108,13 @@ public class PostComparator implements java.util.Comparator<Post>{
             stemmer = new Stemmer();
             stemmer.add(wordsList.get(i).toCharArray(), wordsList.get(i).length());
             stemmer.stem();
-            stemmedSentence += " "+stemmer.toString();
+            stemmedSentence += stemmer.toString()+" ";
 
         }
 
 //        Log.d("thing","Finally: "+stemmedSentence);
 
-
-        return stemmedSentence;
+        return stemmedSentence.substring(0,stemmedSentence.length()-1);
     }
 
 }
