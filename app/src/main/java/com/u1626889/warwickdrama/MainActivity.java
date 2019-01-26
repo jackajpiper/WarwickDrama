@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity
         mViewModel.getAllPosts().observe(this, new Observer<List<Post>>() {
             @Override
             public void onChanged(@Nullable List<Post> posts) {
-                Collections.sort(posts, new PostComparator(getApplicationContext()));
+                Collections.sort(posts, new PostComparator(getApplicationContext(), getParent()));
                 adapter.setPosts(new ArrayList<Post>(posts));
                 adapter.notifyDataSetChanged();
             }
@@ -144,7 +144,7 @@ public class MainActivity extends AppCompatActivity
                 Log.d("thing",newsorted.get(i).getTitle());
             }
 
-            Collections.sort(newsorted, new PostComparator(getApplicationContext()));
+            Collections.sort(newsorted, new PostComparator(getApplicationContext(), getParent()));
 
             Log.d("thing","after update, ");
             for(int i = 0; i < newsorted.size(); i++) {
