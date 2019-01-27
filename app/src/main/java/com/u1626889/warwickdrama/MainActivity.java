@@ -4,22 +4,17 @@ import java.util.*;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Rect;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -29,11 +24,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Adapter;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.LinearLayout.LayoutParams;
 import android.graphics.Color;
 import android.widget.Toast;
 
@@ -81,7 +73,6 @@ public class MainActivity extends AppCompatActivity
 //        TRYING THIS DATABASE THING, HERE GOES
         RecyclerView recyclerView = findViewById(R.id.recyclerview);
         adapter = new PostListAdapter(this);
-        Log.d("thing","CREATING A NEW ADAPTER");
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
 
         // Makes the divider to go between the items in the recycler view, change the gap by editing the method
@@ -108,7 +99,7 @@ public class MainActivity extends AppCompatActivity
         mViewModel.getAllPosts().observe(this, new Observer<List<Post>>() {
             @Override
             public void onChanged(@Nullable List<Post> posts) {
-                Collections.sort(posts, new PostComparator(getApplicationContext(), getParent()));
+                Collections.sort(posts, new PostComparator(getApplicationContext(), posts));
                 adapter.setPosts(new ArrayList<Post>(posts));
                 adapter.notifyDataSetChanged();
             }
@@ -122,11 +113,9 @@ public class MainActivity extends AppCompatActivity
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        Log.d("thing", "Boom, just got back from a leet create view thing");
         if (requestCode == NEW_POST_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK) {
             Post post = new Post(data.getIntExtra("id", 0), data.getStringExtra("title"), data.getStringExtra("contact"), data.getStringExtra("type"), data.getStringExtra("society"), data.getStringExtra("description"), data.getStringExtra("tags"), data.getStringExtra("date"));
             mViewModel.insert(post);
-            Log.d("thing", "Adding post with tags "+post.getTags());
         } else if (requestCode == EDIT_TAGS_ACTIVITY_REQUEST_CODE && resultCode == RESULT_OK){
 
             String tags = data.getStringExtra("new_tags");
@@ -139,17 +128,7 @@ public class MainActivity extends AppCompatActivity
 
             ArrayList<Post> newsorted = new ArrayList<>(adapter.getPosts());
 
-            Log.d("thing","before update, ");
-            for(int i = 0; i < newsorted.size(); i++) {
-                Log.d("thing",newsorted.get(i).getTitle());
-            }
-
-            Collections.sort(newsorted, new PostComparator(getApplicationContext(), getParent()));
-
-            Log.d("thing","after update, ");
-            for(int i = 0; i < newsorted.size(); i++) {
-                Log.d("thing",newsorted.get(i).getTitle());
-            }
+            Collections.sort(newsorted, new PostComparator(getApplicationContext(), newsorted));
 
             adapter.setPosts(newsorted);
             adapter.notifyDataSetChanged();
@@ -363,12 +342,6 @@ public class MainActivity extends AppCompatActivity
             }
             adapter.setPosts(newPosts);
             adapter.notifyDataSetChanged();
-        }
-        Log.d("thing","society is "+society+" and count is "+adapter.getItemCount());
-        Log.d("thing","list is ");
-        ArrayList<Post> listof = adapter.getPosts();
-        for(int i = 0; i < listof.size(); i++) {
-            Log.d("thing",listof.get(i).getTitle());
         }
 
     }
