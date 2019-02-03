@@ -31,7 +31,6 @@ public class CreatePost2Activity extends AppCompatActivity {
         String placeholder_tags_string = "drama";
         placeholder_tags = new ArrayList<String>(Arrays.asList(placeholder_tags_string.split(",")));
 
-        Log.d("thing","is it null? "+placeholder_tags);
         // TURNS THE TAG STRING INTO A LIST AND ADD IT TO THE LISTVIEW
 
         // Create an ArrayAdapter from List
@@ -73,7 +72,6 @@ public class CreatePost2Activity extends AppCompatActivity {
         } else {
             replyIntent.putExtra("tags", tags);
             setResult(RESULT_OK, replyIntent);
-            Log.d("thing", "Packing the CreatePost2Activity reply with data, ZOOMIN back to to the first create activity");
         }
         finish();
 

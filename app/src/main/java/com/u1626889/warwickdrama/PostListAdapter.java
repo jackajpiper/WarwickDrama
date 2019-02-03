@@ -2,6 +2,7 @@ package com.u1626889.warwickdrama;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -17,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostViewHolder> {
@@ -116,21 +118,36 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
         return mPosts;
     }
 
-    public void filter(String text) {
-        Log.d("thing","calling filter. Is it happening multiple times?");
-        mPosts.clear();
-        if(text.equals("")) {
-            mPosts.addAll(mPostsCache);
-        }
-        else {
-            for(Post post : mPostsCache) {
-                if(post.getSociety().equals(text)) {
-                    mPosts.add(post);
-                    Log.d("thing", "adding ONE post with id "+post.getId());
+    public void filter(String text, String type) {
+
+        if(type.equals("society")) {
+            mPosts.clear();
+            if(text.equals("")) {
+                mPosts.addAll(mPostsCache);
+            }
+            else {
+                for(Post post : mPostsCache) {
+                    if(post.getSociety().equals(text)) mPosts.add(post);
                 }
             }
+            notifyDataSetChanged();
+        } else {
+
+            SharedPreferences prefs = mInflator.getContext().getSharedPreferences("savedPosts",0);
+            String savedPosts = prefs.getString("savedPosts","");
+            ArrayList<String> saves = new ArrayList<>(Arrays.asList(savedPosts.split(",")));
+
+            mPosts.clear();
+            if(text.equals("")) {
+                mPosts.addAll(mPostsCache);
+            }
+            else {
+                for(Post post : mPostsCache) {
+                    if(saves.contains(Integer.toString(post.getId()))) mPosts.add(post);
+                }
+            }
+            notifyDataSetChanged();
         }
-        notifyDataSetChanged();
     }
 
 }

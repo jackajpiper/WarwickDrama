@@ -23,6 +23,7 @@
             android:id="@+id/settings"
             android:icon="@drawable/ic_settings"
             android:title="Settings" />
+
     </group>
 
     <item android:title="Our Societies!">

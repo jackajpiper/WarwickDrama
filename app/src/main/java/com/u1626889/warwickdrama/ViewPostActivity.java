@@ -1,6 +1,7 @@
 package com.u1626889.warwickdrama;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +24,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class ViewPostActivity extends AppCompatActivity {
 
@@ -54,8 +56,6 @@ public class ViewPostActivity extends AppCompatActivity {
         int firstNum = intent.getIntExtra("postNumber",0);
         ArrayList<Post> posts = intent.getParcelableArrayListExtra("post");
 
-
-
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), posts, firstNum);
@@ -64,8 +64,6 @@ public class ViewPostActivity extends AppCompatActivity {
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.setCurrentItem(firstNum);
-
-
     }
 
 
@@ -111,7 +109,7 @@ public class ViewPostActivity extends AppCompatActivity {
         }
 
         @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+        public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_view_post, container, false);
             TextView typeText = (TextView) rootView.findViewById(R.id.typeText);
@@ -119,19 +117,51 @@ public class ViewPostActivity extends AppCompatActivity {
             TextView contactText = (TextView) rootView.findViewById(R.id.contactText);
             TextView descText = (TextView) rootView.findViewById(R.id.descText);
             final FloatingActionButton fab = rootView.findViewById(R.id.floatingActionButton);
-//            postFAB.setImageResource(R.drawable.ic_unsave);
+
+            SharedPreferences prefs = inflater.getContext().getSharedPreferences("savedPosts",0);
+            String savedPosts = prefs.getString("savedPosts","");
+
+            // Determines if the saved icon should be lit or not, depending if the current post has already been saved
+            ArrayList<String> saves = new ArrayList<>(Arrays.asList(savedPosts.split(",")));
+            String id = Integer.toString(getArguments().getInt(ARG_ID));
+            if(saves.contains(id)) fab.setImageResource(R.drawable.ic_save);
+            else fab.setImageResource(R.drawable.ic_unsave);
+
+
 
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    // TODO: implement 'saved' functionality from here
-                    Snackbar.make(view, "Saved! (Replace with your own action)", Snackbar.LENGTH_LONG)
-                            .setAction("Action", null).show();
-                    fab.setImageResource(R.drawable.ic_save);
+                    // Gets the list of currently saved posts
+                    SharedPreferences prefs = inflater.getContext().getSharedPreferences("savedPosts",0);
+                    String savedPosts = prefs.getString("savedPosts","");
+                    ArrayList<String> saves = new ArrayList<>(Arrays.asList(savedPosts.split(",")));
+                    String id = Integer.toString(getArguments().getInt(ARG_ID));
+                    SharedPreferences.Editor editor = prefs.edit();
+
+                    // If the post is not saved, save it
+                    // If the post is saved, unsave it
+                    if(saves.contains(id)) {
+                        saves.remove(id);
+                        savedPosts = android.text.TextUtils.join(",", saves);
+
+                        Snackbar.make(view, "Unsaved!", Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
+                        fab.setImageResource(R.drawable.ic_unsave);
+                    } else {
+                        savedPosts += ","+id;
+
+                        Snackbar.make(view, "Saved!", Snackbar.LENGTH_LONG)
+                                .setAction("Action", null).show();
+                        fab.setImageResource(R.drawable.ic_save);
+                    }
+
+                    // Commits it rather than applies, cos it needs to happen immediately
+                    editor.putString("savedPosts",savedPosts).commit();
+
                 }
             });
 
-            int id = getArguments().getInt(ARG_ID);
             String title = getArguments().getString(ARG_TITLE);
             String type = getArguments().getString(ARG_TYPE);
             String society = getArguments().getString(ARG_SOCIETY);
