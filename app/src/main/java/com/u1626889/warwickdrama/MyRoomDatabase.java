@@ -53,7 +53,7 @@ public abstract class MyRoomDatabase extends RoomDatabase {
                     "Monday 7th from 2-6pm in H4.22/4\n" +
                     "Tuesday 8th from 4-8pm in H1.07\n" +
                     "SIGN UP now for auditions on Doodle!!\n" +
-                    "Any questions or queries, please feel free to DM me or Sam Easton - We're more than happy to help x\n", "Comedy,jokes,sketch,show,experimental","");
+                    "Any questions or queries, please feel free to DM me or Sam Easton - We're more than happy to help x\n", "Comedy,jokes,sketch,show,experimental","08/01/2019");
             mDao.insert(post);
 
             post = new Post(View.generateViewId(),"FreshFest 2019 Auditions", "Becky Wadley" , "Audition", "Freshblood", "Saturday 12th January, 1130-1630, B2.04/05\n" +
@@ -69,7 +69,7 @@ public abstract class MyRoomDatabase extends RoomDatabase {
                     "\n" +
                     "And best of luck!!!\n" +
                     "\n" +
-                    "Any questions please message the page or contact Becky Wadley and Kathryn Llewellyn. \n", "Freshfest,chill,beginner,fresher,speed,dating,doodle,acting", "");
+                    "Any questions please message the page or contact Becky Wadley and Kathryn Llewellyn. \n", "Freshfest,chill,beginner,fresher,speed,dating,doodle,acting", "13/01/2019");
             mDao.insert(post);
 
             post = new Post(View.generateViewId(),"ShakeSoc Presents: Hamlet Auditions", "George Chopping" , "Audition", "ShakeSoc", "\"the play's the thing\n" +
@@ -111,7 +111,7 @@ public abstract class MyRoomDatabase extends RoomDatabase {
                     "Lauren Baulch (Producer) - L.Baulch@warwick.ac.uk\n" +
                     "Caitlin Tracey (Assistant Producer) - ctracey1323@gmail.com\n" +
                     "\n" +
-                    "We look forward to seeing all of you. GOOD LUCK.\n", "Shakespeare,acting,hamlet,drama,performing", "");
+                    "We look forward to seeing all of you. GOOD LUCK.\n", "Shakespeare,acting,hamlet,drama,performing", "13/01/2019");
             mDao.insert(post);
 
             post = new Post(View.generateViewId(),"Freshblood Presents: Falling Birds Auditions", "Lizzy Plant" , "Audition", "Freshblood", "Falling Birds is a play about memory. Love. Life. Death. It is the story of Kit, as he confides it to the Moon. The play is episodic and poetic; a lifetime told only through snapshots of a person’s dearest memories. It has no set location, and no set time. It is heart-warming and heart-breaking; a story filled with starlight, sunflowers, and sadness. It reminds us to appreciate those we take for granted. We never know when they may be gone.\n" +
@@ -166,7 +166,7 @@ public abstract class MyRoomDatabase extends RoomDatabase {
                     "\n" +
                     "Owing to the possibility we may ask you to read for more than one character, please be sure to look over all extracts. It is not necessary to memorise your chosen extract, but please be familiar with it so we can make the most of our time together.\n" +
                     "\n" +
-                    "We look forward to seeing your take on these never-before-seen characters!\n", "Monologue,art,memory,love,life,death,moon,poetry", "");
+                    "We look forward to seeing your take on these never-before-seen characters!\n", "Monologue,art,memory,love,life,death,moon,poetry", "13/01/2019");
             mDao.insert(post);
 
             post = new Post(View.generateViewId(),"DC Term 3 Studio Submissions", "Sam Dell" , "Announcement", "All", "Term Three DC Studio show submissions are now OPEN!\n" +
@@ -208,12 +208,12 @@ public abstract class MyRoomDatabase extends RoomDatabase {
                     "- Friday 1st February (week 4)\n" +
                     "Deadline for sending your final pack and a complete script (where appropriate) to the DC Productions Manager.\n" +
                     "\n" +
-                    "Please do not hesitate to get in touch with any questions you might have by emailing Sam Dell (DC Productions Manager) at S.Dell@warwick.ac.uk\n", "pack,direct,submission,dc,collective,interest,application", "");
+                    "Please do not hesitate to get in touch with any questions you might have by emailing Sam Dell (DC Productions Manager) at S.Dell@warwick.ac.uk\n", "pack,direct,submission,dc,collective,interest,application", "19/01/2019");
             mDao.insert(post);
 
             post = new Post(View.generateViewId(),"WITS Refresher Session 2019", "Charlie Cooper" , "Workshop", "Warwick Improvised Theatre Society", "New year, new improv! Join us on Thursday for a no-strings-attached improv session, for existing members and people wanting to give it a try!\n" +
                     "\n" +
-                    "Zero previous experience expected and no membership is required, so new people come along, and existing members bring a friend!\n", "Beginner,friendly,improv,new,try", "");
+                    "Zero previous experience expected and no membership is required, so new people come along, and existing members bring a friend!\n", "Beginner,friendly,improv,new,try", "10/01/2019");
             mDao.insert(post);
 
             post = new Post(View.generateViewId(),"Cool opportunity in Brum!", "Greta April" , "Misc", "All", "Hi guys \uD83C\uDFAC\uD83C\uDFAC\n" +
@@ -223,7 +223,7 @@ public abstract class MyRoomDatabase extends RoomDatabase {
                     "Can anyone help? It's paid and we will clip up all the footage to use on their showreel.\n" +
                     "\n" +
                     "If interested and available please send an email to francesca@tinkertaylor.tv.\n" +
-                    "Thanks all, but mostly Greta \uD83D\uDE02\n", "acting,birmingham,film,short,poem,showreel,paid", "");
+                    "Thanks all, but mostly Greta \uD83D\uDE02\n", "acting,birmingham,film,short,poem,showreel,paid", "07/01/2019");
             mDao.insert(post);
 
             post = new Post(View.generateViewId(),"*SCREEN ACTING OPPORTUNITY*", "Ben Chapman" , "Audition", "All", " Looking for someone to play lead female (playing age 20-21) in a short film for final year project filming on campus and in Leamington on the 19th and 20th of January.\n" +
@@ -231,10 +231,10 @@ public abstract class MyRoomDatabase extends RoomDatabase {
                     "Alicia is newly graduated from University and feels uncertain about her future. She knows what she wants to do but is afraid to pursue it, instead opting to please her working-class father who wants her to find a job but for the sole purpose of obtaining an income. After another failed interview and an argument with her dad, she finds the self confidence to pursue what she actually wants to do with her life.\n" +
                     "Alicia is quite shy in nature and lacks confidence. She is afraid to pursue the career that she wants because she can be quite introverted, and she wants to please her family.\n" +
                     "\n" +
-                    "If interested, contact Megan Sutcliffe for more info!\n", "Short,film,audition,casting,call,lead,female", "");
+                    "If interested, contact Megan Sutcliffe for more info!\n", "Short,film,audition,casting,call,lead,female", "19/01/2019");
             mDao.insert(post);
 
-            post = new Post(View.generateViewId(),"*STUDIO SHOW OPPORTUNITY*\n", "Chloe Binfield" , "Crew/production opportunity", "All", "Looking for people interested in marketing and makeup for a week 8 term 3 studio show! Please message me for more info! Thanks ❤️❤️", "Studio,show,opportunity,marketing,makeup", "");
+            post = new Post(View.generateViewId(),"*STUDIO SHOW OPPORTUNITY*\n", "Chloe Binfield" , "Crew/production opportunity", "All", "Looking for people interested in marketing and makeup for a week 8 term 3 studio show! Please message me for more info! Thanks ❤️❤️", "Studio,show,opportunity,marketing,makeup", "01/02/2019");
             mDao.insert(post);
 
             post = new Post(View.generateViewId(),"Le Monocle Auditions", "Tiff Milner" , "Audition", "All", "Great Egg Theatre Company are looking for actors in a new production, “le Monocle”, written by Warwick University alumni Tiff Milner. le Monocle will be showing at Edinburgh Fringe on August 2-9. The confirmed venue is theSpace@Surgeons Hall, Theatre 5, 7:15pm. Looking for 6 female identifying actresses and 1 male identifying actor.\n" +
@@ -263,12 +263,12 @@ public abstract class MyRoomDatabase extends RoomDatabase {
                     "\n" +
                     "Saturday all day: H2.44\n" +
                     "\n" +
-                    "Sunday all day: H2.44\n", "lgbt,lesbian,gay,bar,edinburgh,fringe,historical,period,new", "");
+                    "Sunday all day: H2.44\n", "lgbt,lesbian,gay,bar,edinburgh,fringe,historical,period,new", "20/01/2019");
             mDao.insert(post);
 
             post = new Post(View.generateViewId(),"*STUDIO OPPORTUNITY*", "Dan Stubbs" , "Crew/production opportuntiy", "All", " Term 3 Week 8 show:\n" +
                     "\n" +
-                    "Hi gang, so remember when I made a post at the end of last term asking for team members for a show pack I’m involved in? WELL WE STILL NEED PEOPLE! This show is gonna be NUTS and we are looking for a Marketing Manager, Marketing Assistant, Publicity Designer and a Makeup Designer! Message me, Mollie Tucker, Lucy Kitcher or Luke Mott for details on the play and what each role entails \uD83D\uDE0A\n", "studio,show,crew,marketing,manager,publicity,makeup,designer,play", "");
+                    "Hi gang, so remember when I made a post at the end of last term asking for team members for a show pack I’m involved in? WELL WE STILL NEED PEOPLE! This show is gonna be NUTS and we are looking for a Marketing Manager, Marketing Assistant, Publicity Designer and a Makeup Designer! Message me, Mollie Tucker, Lucy Kitcher or Luke Mott for details on the play and what each role entails \uD83D\uDE0A\n", "studio,show,crew,marketing,manager,publicity,makeup,designer,play", "01/01/2019");
             mDao.insert(post);
 
             post = new Post(View.generateViewId(),"WUDS Fund Presents: Grounded - Auditions\n", "Joanna Woznicka" , "Audition", "Warwick University Drama Society", "WUDS Fund Presents: Grounded by George Brant, performed in Week 9.\n" +
@@ -308,7 +308,7 @@ public abstract class MyRoomDatabase extends RoomDatabase {
                     "\n" +
                     "Any questions, feel free to ask on this page or message the producer, Joanna Woznicka (email: Joanna.Woznicka@warwick.ac.uk).\n" +
                     "\n" +
-                    "This amateur production of “Grounded” is presented by special arrangement with SAMUEL FRENCH LTD.\n", "Audition,female,lead,workshop,pilot,perform", "");
+                    "This amateur production of “Grounded” is presented by special arrangement with SAMUEL FRENCH LTD.\n", "Audition,female,lead,workshop,pilot,perform", "20/01/2019");
             mDao.insert(post);
 
             post = new Post(View.generateViewId(),"WUDS Minority Fund Auditions: Silence! The Court is in Session\n", "Sumina Kasuji" , "Audition", "Warwick University Drama Society", " “The morality which you have shown through your conduct was the morality that you were planning to impart on the youth of tomorrow”\n" +
@@ -381,12 +381,12 @@ public abstract class MyRoomDatabase extends RoomDatabase {
                     "\n" +
                     "PONKSHE is a clerk who also plays a key witness, and it is revealed that he and Rokde both know something about Benare that she wants to be kept secret.\n" +
                     "\n" +
-                    "SAMANT is a sweet, well-meaning young man and also the one for whom the mock trial is being staged for. At times, he is too innocent for his own good; unwavering in his kindness, Samant is probably the only character in the play without any prejudice toward anyone. He has a fondness for Benare and tries his best to help in his first rehearsal.\n", "minority,fund,india,race,morality,welcoming,friendly,depression,misogyny", "");
+                    "SAMANT is a sweet, well-meaning young man and also the one for whom the mock trial is being staged for. At times, he is too innocent for his own good; unwavering in his kindness, Samant is probably the only character in the play without any prejudice toward anyone. He has a fondness for Benare and tries his best to help in his first rehearsal.\n", "minority,fund,india,race,morality,welcoming,friendly,depression,misogyny", "17/01/2019");
             mDao.insert(post);
 
             post = new Post(View.generateViewId(),"Production Team Database 2018-19 Sign-up", "Sam Dell" , "Crew/production opportunity", "All", "With a whole bunch of shows happening this Term, there are plenty of teams looking to fill roles on their production team. If you’re interested in being contacted about vacancies in certain roles then make sure you’ve added yourself to our Production Team database:\n" +
                     "\n" +
-                    "https://docs.google.com/…/1j6Dgn-7KVeFd0gVeYmIsyGYREUpUFb8o…\n", "production,opportunity,sign,up,database,marketing,photography,vacancies,makeup,lighting,sound,design", "");
+                    "https://docs.google.com/…/1j6Dgn-7KVeFd0gVeYmIsyGYREUpUFb8o…\n", "production,opportunity,sign,up,database,marketing,photography,vacancies,makeup,lighting,sound,design", "16/03/2019");
             mDao.insert(post);
 
             post = new Post(View.generateViewId(),"Falling Birds Shadow Directing", "Paolo Nizam" , "Crew/production opportunity", "Freshblood", "**NEWS** (SHADOW DIRECTING OPPORTUNITY) ** READ TILL END** DEADLINE FRIDAY 25TH - 12:00PM\n" +
@@ -402,7 +402,7 @@ public abstract class MyRoomDatabase extends RoomDatabase {
                     "\n" +
                     "The email in which to send the document off to is pnizam98@gmail.com. If you have any further questions, please feel free to get in contact with our Producers Paolo Nizam/Sam Easton <3 <3\n" +
                     "\n" +
-                    "Lots of Love - Falling Birds Team x\n", "Shadow,directing,opportunity,fun,experience,apply", "");
+                    "Lots of Love - Falling Birds Team x\n", "Shadow,directing,opportunity,fun,experience,apply", "25/01/2019");
             mDao.insert(post);
 
 

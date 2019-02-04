@@ -171,15 +171,19 @@ public class MainActivity extends AppCompatActivity
                 startActivityForResult(tagsintent, EDIT_TAGS_ACTIVITY_REQUEST_CODE);
                 break;
                 // TODO there are a bunch of these commented out sections - replace them as necessary
-            case "Codpeice": adapter.filter("Codpeice", "society");break;
-            case "Freshblood": adapter.filter("Freshblood", "society");break;
-            case "Musical Theatre Warwick": adapter.filter("MTW", "society");break;
-            case "Opera Warwick": adapter.filter("Opera Warwick", "society");break;
-            case "ShakeSoc": adapter.filter("ShakeSoc", "society");break;
-            case "Tech Crew": adapter.filter("Tech Crew", "society");break;
-            case "Warwick Improvised Theatre Society": adapter.filter("WITS", "society");break;
-            case "Warwick University Drama Society": adapter.filter("WUDS", "society");break;
-            default: adapter.filter("", "society");break;
+            case "Codpeice": adapter.filter("Codpeice");break;
+            case "Freshblood": adapter.filter("Freshblood");break;
+            case "Musical Theatre Warwick": adapter.filter("MTW");break;
+            case "Opera Warwick": adapter.filter("Opera Warwick");break;
+            case "ShakeSoc": adapter.filter("ShakeSoc");break;
+            case "Tech Crew": adapter.filter("Tech Crew");break;
+            case "Warwick Improvised Theatre Society": adapter.filter("WITS");break;
+            case "Warwick University Drama Society": adapter.filter("WUDS");break;
+            case "Calendar":
+                intent = new Intent(this, CalandarActivity.class);
+                startActivity(intent);
+                break;
+            default: adapter.filter("");break;
         }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

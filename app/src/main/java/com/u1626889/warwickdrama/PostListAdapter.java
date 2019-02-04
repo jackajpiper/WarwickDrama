@@ -118,36 +118,17 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
         return mPosts;
     }
 
-    public void filter(String text, String type) {
-
-        if(type.equals("society")) {
-            mPosts.clear();
-            if(text.equals("")) {
-                mPosts.addAll(mPostsCache);
-            }
-            else {
-                for(Post post : mPostsCache) {
-                    if(post.getSociety().equals(text)) mPosts.add(post);
-                }
-            }
-            notifyDataSetChanged();
-        } else {
-
-            SharedPreferences prefs = mInflator.getContext().getSharedPreferences("savedPosts",0);
-            String savedPosts = prefs.getString("savedPosts","");
-            ArrayList<String> saves = new ArrayList<>(Arrays.asList(savedPosts.split(",")));
-
-            mPosts.clear();
-            if(text.equals("")) {
-                mPosts.addAll(mPostsCache);
-            }
-            else {
-                for(Post post : mPostsCache) {
-                    if(saves.contains(Integer.toString(post.getId()))) mPosts.add(post);
-                }
-            }
-            notifyDataSetChanged();
+    public void filter(String text) {
+        mPosts.clear();
+        if(text.equals("")) {
+            mPosts.addAll(mPostsCache);
         }
+        else {
+            for(Post post : mPostsCache) {
+                if(post.getSociety().equals(text)) mPosts.add(post);
+            }
+        }
+        notifyDataSetChanged();
     }
 
 }
