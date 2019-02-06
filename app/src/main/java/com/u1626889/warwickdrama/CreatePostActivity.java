@@ -40,7 +40,7 @@ public class CreatePostActivity extends AppCompatActivity {
     private void popupDatePicker() {
         final Context context = this;
         final Calendar myCalendar = Calendar.getInstance();
-        final SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.UK);
+        final SimpleDateFormat sdf = new SimpleDateFormat("dd/mm/yyyy", Locale.UK);
         final EditText contact_text = (EditText) findViewById(R.id.dateText);
 
         // init - set date to current date
