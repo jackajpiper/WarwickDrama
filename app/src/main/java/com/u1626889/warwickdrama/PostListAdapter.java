@@ -43,12 +43,14 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
     private ArrayList<Post> mPostsCache; // Cached copy of the posts
     private ArrayList<Post> mPosts;
     private ArrayList<Post> filteredPosts;
+    private Context mContext;
 
     PostListAdapter(Context context) {
         mInflator = LayoutInflater.from(context);
         mPosts = new ArrayList<Post>();
         filteredPosts = new ArrayList<Post>();
         mPostsCache = new ArrayList<Post>();
+        mContext = context;
     }
 
     @Override
@@ -115,19 +117,30 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
     }
 
     public ArrayList<Post> getPosts() {
-        return mPosts;
+        return mPostsCache;
     }
 
-    public void filter(String text) {
+    public void filter(String text, boolean saved) {
         mPosts.clear();
-        if(text.equals("")) {
-            mPosts.addAll(mPostsCache);
-        }
-        else {
-            for(Post post : mPostsCache) {
-                if(post.getSociety().equals(text)) mPosts.add(post);
+        if(saved) {
+            // Gets the list of currently saved posts
+            SharedPreferences prefs = mContext.getSharedPreferences("savedPosts",0);
+            String savedPosts = prefs.getString("savedPosts","");
+            ArrayList<String> savedIds = new ArrayList<>(Arrays.asList(savedPosts.split(",")));
+            for(Post post: mPostsCache) {
+                if(savedIds.contains(Integer.toString(post.getId()))) mPosts.add(post);
+            }
+        } else {
+            if(text.equals("")) {
+                mPosts.addAll(mPostsCache);
+            }
+            else {
+                for(Post post : mPostsCache) {
+                    if(post.getSociety().equals(text)) mPosts.add(post);
+                }
             }
         }
+
         notifyDataSetChanged();
     }
 

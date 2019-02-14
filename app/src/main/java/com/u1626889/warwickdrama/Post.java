@@ -8,7 +8,7 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
 @Entity(tableName = "post_table")
-public class Post implements Parcelable {
+public class Post implements Parcelable, Cloneable {
     @PrimaryKey
     @NonNull
     @ColumnInfo(name = "id")
@@ -94,6 +94,12 @@ public class Post implements Parcelable {
         desc = in.readString();
         tags = in.readString();
         exp_date = in.readString();
+    }
+
+    @Override
+    public Post clone() {
+        Post newPost = new Post(id,title,owner,type,society,desc,tags,exp_date);
+        return newPost;
     }
 
 }

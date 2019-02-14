@@ -1,5 +1,6 @@
 package com.u1626889.warwickdrama;
 
+import android.annotation.TargetApi;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.design.widget.FloatingActionButton;
@@ -20,8 +21,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -58,7 +62,7 @@ public class ViewPostActivity extends AppCompatActivity {
 
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), posts, firstNum);
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), posts, posts.size()-1);
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
@@ -115,7 +119,7 @@ public class ViewPostActivity extends AppCompatActivity {
             TextView typeText = (TextView) rootView.findViewById(R.id.typeText);
             TextView titleText = (TextView) rootView.findViewById(R.id.titleText);
             TextView contactText = (TextView) rootView.findViewById(R.id.contactText);
-            TextView descText = (TextView) rootView.findViewById(R.id.descText);
+            final TextView descText = (TextView) rootView.findViewById(R.id.descText);
             final FloatingActionButton fab = rootView.findViewById(R.id.floatingActionButton);
 
             SharedPreferences prefs = inflater.getContext().getSharedPreferences("savedPosts",0);
@@ -127,6 +131,40 @@ public class ViewPostActivity extends AppCompatActivity {
             if(saves.contains(id)) fab.setImageResource(R.drawable.ic_save);
             else fab.setImageResource(R.drawable.ic_unsave);
 
+            // Unfortunatly the on scroll listener only works at API level 23 and above
+            // My min is 19, and I shouldn't increase it, 20% of users have API < 23
+//            if(android.os.Build.VERSION.SDK_INT >= 23) {
+//                descText.setOnScrollChangeListener(new TextView.OnScrollChangeListener()) {
+//                    @Override
+//                    public void onScrolled(TextView descText, int dx, int dy) {
+//                        if( dy>0 || dy<0 && fab.isShown())
+//                            fab.hide();
+//                    }
+//
+//                    @Override
+//                    public void onScrollStateChanged(TextView descText, int newState) {
+//                        if (newState == TextView.SCROLL_STATE_IDLE)
+//                            fab.show();
+//                        super.onScrollStateChanged(descText, newState);
+//                    }
+//
+//                }
+//            }
+
+//          TODO: Make the floating action button appear and dissapear when the user scrolls
+            descText.getViewTreeObserver().addOnScrollChangedListener(new ViewTreeObserver.OnScrollChangedListener() {
+                int pos = 0;
+                @Override
+                public void onScrollChanged() {
+                    int mScrollY = descText.getScrollY();
+                    Log.d("thing","Scrolled! magnitude is "+mScrollY+", scroll mode is ");
+                    if (mScrollY > 0 && fab.isShown()) {
+                        fab.hide();
+                    } else if (mScrollY < 0) {
+                        fab.show();
+                    }
+                }
+            });
 
 
             fab.setOnClickListener(new View.OnClickListener() {
@@ -157,6 +195,7 @@ public class ViewPostActivity extends AppCompatActivity {
                     }
 
                     // Commits it rather than applies, cos it needs to happen immediately
+                    Log.d("thing","SAVING POST, POSTS ARE NOW "+savedPosts);
                     editor.putString("savedPosts",savedPosts).commit();
 
                 }

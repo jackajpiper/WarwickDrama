@@ -34,6 +34,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
@@ -55,7 +56,6 @@ public class CalandarActivity extends AppCompatActivity {
         switchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 saves = isChecked;
-                Log.d("thing", "saved is "+saves);
                 if(saves) {
                     switchButton.setText("Saved posts");
                 }
@@ -71,10 +71,18 @@ public class CalandarActivity extends AppCompatActivity {
 
         final Context context = this;
         WDViewModel mViewModel = ViewModelProviders.of(this).get(WDViewModel.class);
-        LiveData<List<Post>> dates = mViewModel.getAllPosts();
-        dates.observe(this, new Observer<List<Post>>() {
+        LiveData<List<Post>> livedates = mViewModel.getAllPosts();
+        livedates.observe(this, new Observer<List<Post>>() {
             @Override
             public void onChanged(@Nullable final List<Post> dates){
+
+                // We need to create a new array to pass to the adapter, otherwise the adapter and
+                // the original list have the same reference, so the list will change when we're
+                // not expecting it.
+                ArrayList<Post> newArray = new ArrayList<>(dates.size());
+                for(int i =0; i < dates.size(); i++) {
+                    newArray.add(dates.get(i).clone());
+                }
 
                 for(int i = 0; i < dates.size(); i++) {
                     String dateStr = dates.get(i).getExp_date();
@@ -90,8 +98,13 @@ public class CalandarActivity extends AppCompatActivity {
                 final MaterialCalendarView calendar = findViewById(R.id.calendarView);
                 calendar.addDecorator(eventDecorator);
 
+                // Gets the list of currently saved posts
+                SharedPreferences prefs = getSharedPreferences("savedPosts",0);
+                String savedPosts = prefs.getString("savedPosts","");
+                ArrayList<String> savedIds = new ArrayList<>(Arrays.asList(savedPosts.split(",")));
+
                 adapter = new PostCalendarAdapter(context);
-                adapter.setPosts((ArrayList) dates);
+                adapter.setPosts((ArrayList) newArray);
                 calendar.setOnDateChangedListener(new OnDateSelectedListener() {
                     @Override
                     public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
@@ -116,7 +129,6 @@ public class CalandarActivity extends AppCompatActivity {
                             SharedPreferences prefs = context.getSharedPreferences("savedPosts",0);
                             String savedPosts = prefs.getString("savedPosts","");
                             ArrayList<String> savedIds = new ArrayList<>(Arrays.asList(savedPosts.split(",")));
-
                             for(int i = 0; i < dates.size(); i++) {
                                 String dateStr = dates.get(i).getExp_date();
                                 // IT GOES IT GOES IT GOES IT GOES DD/MM/YYYY
@@ -131,7 +143,6 @@ public class CalandarActivity extends AppCompatActivity {
                         }
                         else {
                             switchButton.setText("All posts");
-
                             for(int i = 0; i < dates.size(); i++) {
                                 String dateStr = dates.get(i).getExp_date();
                                 // IT GOES IT GOES IT GOES IT GOES DD/MM/YYYY

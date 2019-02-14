@@ -45,12 +45,12 @@ public class PostCalendarAdapter extends RecyclerView.Adapter<PostCalendarAdapte
     private ArrayList<Post> filteredPosts;
     private Context context;
 
-    PostCalendarAdapter(Context context) {
-        mInflator = LayoutInflater.from(context);
+    PostCalendarAdapter(Context context2) {
+        mInflator = LayoutInflater.from(context2);
         mPosts = new ArrayList<Post>();
         filteredPosts = new ArrayList<Post>();
         mPostsCache = new ArrayList<Post>();
-        context = this.context;
+        this.context = context2;
     }
 
     @Override
@@ -64,12 +64,13 @@ public class PostCalendarAdapter extends RecyclerView.Adapter<PostCalendarAdapte
     public void onBindViewHolder(final PostViewHolder holder, final int position) {
         if (mPosts != null) {
             final Post current = mPosts.get(position);
+            Log.d("thing","This is the "+position+"th post in a list of "+mPosts.size()+" posts");
             holder.postItemView.setText(current.getTitle()); // THIS IS WHAT'S DISPLAYED IN THE CARD
             holder.postView.setOnClickListener(new View.OnClickListener() {
                 @Override public void onClick(View v) {
                     Intent intent = new Intent(v.getContext(), ViewPostActivity.class);
                     intent.putExtra("postNumber", holder.getAdapterPosition());
-                    intent.putParcelableArrayListExtra("post", getPosts());
+                    intent.putParcelableArrayListExtra("post", mPosts);
                     v.getContext().startActivity(intent);
                 }
             });
@@ -101,58 +102,51 @@ public class PostCalendarAdapter extends RecyclerView.Adapter<PostCalendarAdapte
     }
 
     public ArrayList<Post> getPosts() {
-        return mPosts;
+        return mPostsCache;
     }
 
     public void filter(String date, boolean saves) {
-        mPosts.clear();
 
-        if(saves) {
+        if(saves && !date.equals("")) {
+            mPosts.clear();
+            // Gets the list of currently saved posts
+            SharedPreferences prefs = context.getSharedPreferences("savedPosts",0);
+            String savedPosts = prefs.getString("savedPosts","");
+            ArrayList<String> savedIds = new ArrayList<>(Arrays.asList(savedPosts.split(",")));
 
-        } else {
-            if(date.equals("")) {
+            for(Post post : mPostsCache) {
+                ArrayList<String> givenArr = new ArrayList<>(Arrays.asList(date.split("-")));
+                ArrayList<String> postArr = new ArrayList<>(Arrays.asList(post.getExp_date().split("/")));
+                int givenYear = Integer.parseInt(givenArr.get(0));
+                int postYear = Integer.parseInt(postArr.get(2));
+                int givenMonth = Integer.parseInt(givenArr.get(1));
+                int postMonth = Integer.parseInt(postArr.get(1));
+                int givenDay = Integer.parseInt(givenArr.get(2));
+                int postDay = Integer.parseInt(postArr.get(0));
 
-                // Gets the list of currently saved posts
-                SharedPreferences prefs = context.getSharedPreferences("savedPosts",0);
-                String savedPosts = prefs.getString("savedPosts","");
-                ArrayList<String> savedIds = new ArrayList<>(Arrays.asList(savedPosts.split(",")));
-
-                for(Post post : mPostsCache) {
-                    ArrayList<String> givenArr = new ArrayList<>(Arrays.asList(date.split("-")));
-                    ArrayList<String> postArr = new ArrayList<>(Arrays.asList(post.getExp_date().split("/")));
-                    int givenYear = Integer.parseInt(givenArr.get(0));
-                    int postYear = Integer.parseInt(postArr.get(2));
-                    int givenMonth = Integer.parseInt(givenArr.get(1));
-                    int postMonth = Integer.parseInt(postArr.get(1));
-                    int givenDay = Integer.parseInt(givenArr.get(2));
-                    int postDay = Integer.parseInt(postArr.get(0));
-
-                    if(givenYear==postYear & givenMonth==postMonth & givenDay==postDay & savedIds.contains(Integer.toString(post.getId()))) {
-                        Log.d("thing","MATCH! "+post.getTitle());
-                        mPosts.add(post);
-                    }
+                if(givenYear==postYear & givenMonth==postMonth & givenDay==postDay & savedIds.contains(Integer.toString(post.getId()))) {
+                    mPosts.add(post);
                 }
             }
-            else {
-                for(Post post : mPostsCache) {
-                    ArrayList<String> givenArr = new ArrayList<>(Arrays.asList(date.split("-")));
-                    ArrayList<String> postArr = new ArrayList<>(Arrays.asList(post.getExp_date().split("/")));
-                    int givenYear = Integer.parseInt(givenArr.get(0));
-                    int postYear = Integer.parseInt(postArr.get(2));
-                    int givenMonth = Integer.parseInt(givenArr.get(1));
-                    int postMonth = Integer.parseInt(postArr.get(1));
-                    int givenDay = Integer.parseInt(givenArr.get(2));
-                    int postDay = Integer.parseInt(postArr.get(0));
+        } else if(!date.equals("")) {
+            mPosts.clear();
+            for(Post post : mPostsCache) {
+                ArrayList<String> givenArr = new ArrayList<>(Arrays.asList(date.split("-")));
+                ArrayList<String> postArr = new ArrayList<>(Arrays.asList(post.getExp_date().split("/")));
+                int givenYear = Integer.parseInt(givenArr.get(0));
+                int postYear = Integer.parseInt(postArr.get(2));
+                int givenMonth = Integer.parseInt(givenArr.get(1));
+                int postMonth = Integer.parseInt(postArr.get(1));
+                int givenDay = Integer.parseInt(givenArr.get(2));
+                int postDay = Integer.parseInt(postArr.get(0));
 
-                    if(givenYear==postYear & givenMonth==postMonth & givenDay==postDay) {
-                        Log.d("thing","MATCH! "+post.getTitle());
-                        mPosts.add(post);
-                    }
+                if(givenYear==postYear & givenMonth==postMonth & givenDay==postDay) {
+                    mPosts.add(post);
                 }
             }
-            notifyDataSetChanged();
         }
 
+        notifyDataSetChanged();
 
     }
 
