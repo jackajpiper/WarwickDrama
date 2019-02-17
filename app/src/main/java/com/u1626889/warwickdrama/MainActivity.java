@@ -142,13 +142,11 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.codpeice) {
-            return true;
+        switch (id) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -166,7 +164,8 @@ public class MainActivity extends AppCompatActivity
                 Intent intent = new Intent(this, CreatePostActivity.class);
                 startActivityForResult(intent, NEW_POST_ACTIVITY_REQUEST_CODE);
                 break;
-            case "Edit your tags":
+            case "Edit my tags":
+                Log.d("thing","Trying to edit tags");
                 Intent tagsintent = new Intent(this, EditTagsActivity.class);
                 startActivityForResult(tagsintent, EDIT_TAGS_ACTIVITY_REQUEST_CODE);
                 break;

@@ -105,7 +105,7 @@ public class PostCalendarAdapter extends RecyclerView.Adapter<PostCalendarAdapte
         return mPostsCache;
     }
 
-    public void filter(String date, boolean saves) {
+    public int filter(String date, boolean saves) {
 
         if(saves && !date.equals("")) {
             mPosts.clear();
@@ -147,7 +147,7 @@ public class PostCalendarAdapter extends RecyclerView.Adapter<PostCalendarAdapte
         }
 
         notifyDataSetChanged();
-
+        return mPosts.size();
     }
 
 }

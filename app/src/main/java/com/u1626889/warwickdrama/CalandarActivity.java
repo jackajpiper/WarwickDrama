@@ -19,6 +19,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.Switch;
+import android.widget.TextView;
 
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.DayViewDecorator;
@@ -109,7 +110,13 @@ public class CalandarActivity extends AppCompatActivity {
                     @Override
                     public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
                         String dateStr = date.getDate().toString();
-                        adapter.filter(dateStr, saves);
+                        int num = adapter.filter(dateStr, saves);
+                        TextView tv = findViewById(R.id.postNumText);
+                        String text;
+                        if(num==0) text = "No posts";
+                        else if(num==1) text = "1 post";
+                        else text = num+" posts";
+                        tv.setText(text);
                     }
                 });
                 LinearLayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
