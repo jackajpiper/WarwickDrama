@@ -117,12 +117,12 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
     }
 
     public ArrayList<Post> getPosts() {
-        return mPostsCache;
+        return mPosts;
     }
 
-    public void filter(String text, boolean saved) {
+    public void filter(String text, String type) {
         mPosts.clear();
-        if(saved) {
+        if(type.equals("saved")) {
             // Gets the list of currently saved posts
             SharedPreferences prefs = mContext.getSharedPreferences("savedPosts",0);
             String savedPosts = prefs.getString("savedPosts","");
@@ -130,13 +130,22 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
             for(Post post: mPostsCache) {
                 if(savedIds.contains(Integer.toString(post.getId()))) mPosts.add(post);
             }
-        } else {
+        } else if(type.equals("society")) {
             if(text.equals("")) {
                 mPosts.addAll(mPostsCache);
             }
             else {
                 for(Post post : mPostsCache) {
                     if(post.getSociety().equals(text)) mPosts.add(post);
+                }
+            }
+        } else if(type.equals("search")) {
+            if(text.equals("")) {
+                mPosts.addAll(mPostsCache);
+            }
+            else {
+                for(Post post : mPostsCache) {
+                    if(post.getTitle().toLowerCase().contains(text) || post.getDesc().toLowerCase().contains(text)) mPosts.add(post);
                 }
             }
         }

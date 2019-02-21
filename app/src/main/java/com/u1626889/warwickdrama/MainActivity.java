@@ -12,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -88,7 +89,6 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-
     }
 
     // TODO - this should run when the reply activity returns with the data for a new post
@@ -137,6 +137,25 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+        // Getting SearchView from XML layout by id defined there - action_search in this case
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        final SearchView searchView = (SearchView) menu.findItem(R.id.action_search).getActionView();
+        Log.d("thing",""+searchView);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                // your text view here
+                adapter.filter(newText,"search");
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                adapter.filter(query,"search");
+                searchView.clearFocus();
+                return true;
+            }
+        });
         return true;
     }
 
@@ -170,20 +189,20 @@ public class MainActivity extends AppCompatActivity
                 startActivityForResult(tagsintent, EDIT_TAGS_ACTIVITY_REQUEST_CODE);
                 break;
                 // TODO there are a bunch of these commented out sections - replace them as necessary
-            case "Codpeice": adapter.filter("Codpeice", false);break;
-            case "Freshblood": adapter.filter("Freshblood", false);break;
-            case "Musical Theatre Warwick": adapter.filter("Musical Theatre Warwick", false);break;
-            case "Opera Warwick": adapter.filter("Opera Warwick", false);break;
-            case "ShakeSoc": adapter.filter("ShakeSoc", false);break;
-            case "Tech Crew": adapter.filter("Tech Crew", false);break;
-            case "Warwick Improvised Theatre Society": adapter.filter("Warwick Improvised Theatre Society", false);break;
-            case "Warwick University Drama Society": adapter.filter("Warwick University Drama Society", false);break;
+            case "Codpeice": adapter.filter("Codpeice", "society");break;
+            case "Freshblood": adapter.filter("Freshblood", "society");break;
+            case "Musical Theatre Warwick": adapter.filter("Musical Theatre Warwick", "society");break;
+            case "Opera Warwick": adapter.filter("Opera Warwick", "society");break;
+            case "ShakeSoc": adapter.filter("ShakeSoc", "society");break;
+            case "Tech Crew": adapter.filter("Tech Crew", "society");break;
+            case "Warwick Improvised Theatre Society": adapter.filter("Warwick Improvised Theatre Society", "society");break;
+            case "Warwick University Drama Society": adapter.filter("Warwick University Drama Society", "society");break;
             case "Calendar":
                 intent = new Intent(this, CalandarActivity.class);
                 startActivity(intent);
                 break;
-            case "My saved posts": adapter.filter("",true);break;
-            default: adapter.filter("", false);break;
+            case "My saved posts": adapter.filter("","saved");break;
+            default: adapter.filter("", "society");break;
         }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
