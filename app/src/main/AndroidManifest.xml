@@ -20,11 +20,6 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SecondActivity"
-            android:label="@string/title_activity_second"
-            android:parentActivityName=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".CreatePostActivity"
             android:label="Create a post"
             android:parentActivityName=".MainActivity">
@@ -34,7 +29,7 @@
         </activity>
         <activity
             android:name=".CreatePost2Activity"
-            android:label="Add tags"
+            android:label="Add Tags"
             android:parentActivityName=".CreatePostActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -50,7 +45,7 @@
         </activity>
         <activity
             android:name=".EditTagsActivity"
-            android:label="@string/title_activity_edit_tags"
+            android:label="Edit Tags"
             android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -58,7 +53,7 @@
         </activity>
         <activity
             android:name=".CalandarActivity"
-            android:label="@string/title_activity_calandar"
+            android:label="Calendar"
             android:theme="@style/AppTheme.NoActionBar"
             android:parentActivityName=".MainActivity">
             <meta-data

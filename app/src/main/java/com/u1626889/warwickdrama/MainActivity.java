@@ -121,6 +121,8 @@ public class MainActivity extends AppCompatActivity
                     "Tags updated!",
                     Toast.LENGTH_LONG).show();
         }
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("Warwick Drama");
     }
 
     @Override
@@ -179,12 +181,12 @@ public class MainActivity extends AppCompatActivity
         // Runs the method to only show posts related to that menu item
         switch (title) {
 
-            case "Create a note":
+            case "Create a post":
+                Log.d("thing","Trying to create a post");
                 Intent intent = new Intent(this, CreatePostActivity.class);
                 startActivityForResult(intent, NEW_POST_ACTIVITY_REQUEST_CODE);
                 break;
             case "Edit my tags":
-                Log.d("thing","Trying to edit tags");
                 Intent tagsintent = new Intent(this, EditTagsActivity.class);
                 startActivityForResult(tagsintent, EDIT_TAGS_ACTIVITY_REQUEST_CODE);
                 break;
@@ -206,8 +208,10 @@ public class MainActivity extends AppCompatActivity
         }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        if(title.equals("Home")) toolbar.setTitle("Warwick Drama");
-        else toolbar.setTitle(title);
+//        if(title.equals("Home")) toolbar.setTitle("Warwick Drama");
+//        else if(title.equals("Settings")) toolbar.setTitle();
+        if(!title.equals("Home") && !title.equals("Calendar") && !title.equals("Settings") && !title.equals("Administrator Settings")) toolbar.setTitle(title);
+        else toolbar.setTitle("Warwick Drama");
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;

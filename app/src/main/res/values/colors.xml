@@ -2,8 +2,9 @@
 <resources>
     <color name="colorPrimary">#624568</color>
     <color name="colorPrimaryDark">#453049</color>
-    <color name="colorAccent">#F7F9E0</color>
+    <color name="colorAccent">#514568</color>
     <color name="black">#bfbfbf</color>
     <color name="postCard">#a575af</color>
     <color name="postsDivider">#F7F9E0</color>
+    <color name="viewPostAccent">#e9eae3</color>
 </resources>

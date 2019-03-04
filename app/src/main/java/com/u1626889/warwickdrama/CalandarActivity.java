@@ -51,9 +51,9 @@ public class CalandarActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calandar);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("Calendar");
         final Switch switchButton = findViewById(R.id.switch1);
         switchButton.setText("All posts");
-        setSupportActionBar(toolbar);
         switchButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 saves = isChecked;
@@ -113,9 +113,9 @@ public class CalandarActivity extends AppCompatActivity {
                         int num = adapter.filter(dateStr, saves);
                         TextView tv = findViewById(R.id.postNumText);
                         String text;
-                        if(num==0) text = "No posts";
-                        else if(num==1) text = "1 post";
-                        else text = num+" posts";
+                        if(num==0) text = "No\nposts";
+                        else if(num==1) text = "1\npost";
+                        else text = num+"\nposts";
                         tv.setText(text);
                     }
                 });

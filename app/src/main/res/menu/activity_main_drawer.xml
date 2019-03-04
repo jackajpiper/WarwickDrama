@@ -14,7 +14,7 @@
         <item
             android:id="@+id/create_note"
             android:icon="@drawable/ic_menu_camera"
-            android:title="Create a note" />
+            android:title="Create a post" />
         <item
             android:id="@+id/edit_tags"
             android:icon="@drawable/ic_menu_gallery"

@@ -1,29 +1,68 @@
 package com.u1626889.warwickdrama;
 
-import android.arch.persistence.room.Room;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import android.util.Log;
 
 public class PostComparator implements java.util.Comparator<Post>{
 
     private Context context;
     private List<Post> posts;
+    private ArrayList<Integer> savedArr;
     private String corpus;
+    private StringBuilder savedCorpus;
+    private String tags;
 
-    public PostComparator(Context context, List<Post> posts) {
+    public PostComparator(Context context, List<Post> newposts) {
         this.context = context;
-        this.posts = posts;
+        posts = newposts;
 //        Log.d("thing","Forming corpus");
+        StringBuilder corpusBuilder = new StringBuilder();
         for(int i = 0; i < posts.size(); i++) {
-            corpus += posts.get(i).getDesc() + " " + posts.get(i).getTitle() + " ";
+            corpusBuilder.append(posts.get(i).getDesc()).append(" ").append(posts.get(i).getTitle()).append(" ");
         }
+        corpus = corpusBuilder.toString();
         corpus = stemSentence(corpus.substring(0,corpus.length()-1));
+
+        SharedPreferences prefs = context.getSharedPreferences("user_tags",0);
+        String tags = prefs.getString("user_tags","").toLowerCase();
+        tags = stemSentence(tags);
+        this.tags = tags;
+
+//        SharedPreferences savedPrefs = context.getSharedPreferences("savedPosts",0);
+//        String savedIds = savedPrefs.getString("savedPosts","");
+//        ArrayList<String> savedArrStr = new ArrayList<>(Arrays.asList(savedIds.split(",")));
+//        Log.d("thing","str is "+savedIds);
+//        savedArr = new ArrayList<>();
+//
+//        if(!savedIds.equals("")) {
+//            for(int i =0; i<savedArrStr.size(); i++) {
+//                savedArr.add(Integer.parseInt(savedArrStr.get(i)));
+//            }
+//        }
+//        ArrayList<String> savedStrings = new ArrayList<>();
+////        for(int i=0; i<savedArr.size(); i++) {
+////            if(s)
+////        }
+//
+//        savedCorpus = new StringBuilder();
+//        for(int i=0; i<savedArr.size(); i++) {
+//
+//            for(int n=0; n<posts.size(); n++) {
+//                if(posts.get(n).getId() == savedArr.get(i)); {
+//
+//                    savedCorpus.append(posts.get(n).getDesc());
+//
+//                }
+//            }
+//
+//        }
+
+
     }
 
     @Override
@@ -35,17 +74,15 @@ public class PostComparator implements java.util.Comparator<Post>{
     public int compare(Post post1, Post post2) {
 // ---------------------- THIS IS WHERE THE RECOMMENDATION COMPARISON HAPPENS ----------------------
 //        Log.d("thing","Starting comparison");
-        SharedPreferences prefs = context.getSharedPreferences("user_tags",0);
-        String tags = prefs.getString("user_tags","").toLowerCase();
-        tags = stemSentence(tags);
-
-
 
 //        Log.d("thing","Stemming post descs");
         String post1Text = stemSentence(post1.getDesc().toLowerCase());
         String post2Text = stemSentence(post2.getDesc().toLowerCase());
 
 //        Log.d("thing","Calculating tfIdf");
+
+//        Calculates the tf-idf score between a post and the corpus
+//        That is, find the tf-idf score of a particular tag, and sum them
         double tfIdf1 = calculateTfIdf(corpus,post1Text,tags);
         double tfIdf2 = calculateTfIdf(corpus, post2Text, tags);
 
@@ -54,9 +91,17 @@ public class PostComparator implements java.util.Comparator<Post>{
         int tagMatch1 = tagsCompare(post1tags, tags);
         int tagMatch2 = tagsCompare(post2tags, tags);
 
+        int savedAddition1 = 0;
+        int savedAddition2 = 0;
+//        if(savedArr.contains(post1.getId())) savedAddition1+=500;
+//        if(savedArr.contains(post2.getId())) savedAddition2+=500;
+
 //        Total is weighted cos tfIdf yields like 5 times smaller numbers
-        double total1 = tagMatch1+(tfIdf1*5);
-        double total2 = tagMatch2+tfIdf2;
+//        TODO: I didn't have total2's tag match *5 before, does it change how the algorithm behaves?
+        double total1 = tagMatch1+(tfIdf1*5)+savedAddition1;
+        double total2 = tagMatch2+(tfIdf2*5)+savedAddition2;
+//        Log.d("thing","post1 score "+savedAddition1+", post2 score "+savedAddition2);
+//        Log.d("thing","second saved id is "+savedArr.toArray());
 
         if(total1 > total2) return -1;
         else if(total1 < total2) return 1;
