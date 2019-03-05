@@ -13,11 +13,11 @@
             android:title="Home" />
         <item
             android:id="@+id/create_note"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_createpost"
             android:title="Create a post" />
         <item
             android:id="@+id/edit_tags"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/ic_edittags"
             android:title="Edit my tags" />
         <item
             android:id="@+id/settings"
@@ -25,11 +25,11 @@
             android:title="Settings" />
         <item
             android:id="@+id/calendar"
-            android:icon="@drawable/ic_menu_manage"
+            android:icon="@drawable/ic_calendar"
             android:title="Calendar" />
         <item
             android:id="@+id/savedPosts"
-            android:icon="@drawable/ic_menu_slideshow"
+            android:icon="@drawable/ic_savedposts"
             android:title="My saved posts" />
     </group>
 
@@ -37,35 +37,35 @@
         <menu>
             <item
                 android:id="@+id/codpeice"
-                android:background="@mipmap/ic_warwickdrama_round"
+                android:icon="@drawable/ic_codpeice"
                 android:title="Codpeice" />
             <item
                 android:id="@+id/freshblood"
-                android:icon="@drawable/ic_launcher_background"
+                android:icon="@drawable/ic_freshblood"
                 android:title="Freshblood" />
             <item
                 android:id="@+id/mtw"
-                android:icon="@drawable/ic_launcher_foreground"
+                android:icon="@drawable/ic_mtw"
                 android:title="Musical Theatre Warwick" />
             <item
                 android:id="@+id/opwa"
-                android:icon="@drawable/ic_menu_camera"
+                android:icon="@drawable/ic_opera"
                 android:title="Opera Warwick" />
             <item
                 android:id="@+id/shakesoc"
-                android:icon="@drawable/ic_menu_gallery"
+                android:icon="@drawable/ic_shakesoc"
                 android:title="ShakeSoc" />
             <item
                 android:id="@+id/tec"
-                android:icon="@drawable/ic_menu_manage"
+                android:icon="@drawable/ic_techcrew"
                 android:title="Tech Crew" />
             <item
                 android:id="@+id/wits"
-                android:icon="@drawable/ic_menu_slideshow"
+                android:icon="@drawable/ic_improv"
                 android:title="Warwick Improvised Theatre Society" />
             <item
                 android:id="@+id/wuds"
-                android:icon="@drawable/ic_menu_share"
+                android:icon="@drawable/ic_wuds"
                 android:title="Warwick University Drama Society" />
         </menu>
     </item>

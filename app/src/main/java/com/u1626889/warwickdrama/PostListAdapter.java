@@ -145,7 +145,7 @@ public class PostListAdapter extends RecyclerView.Adapter<PostListAdapter.PostVi
             }
             else {
                 for(Post post : mPostsCache) {
-                    if(post.getTitle().toLowerCase().contains(text) || post.getDesc().toLowerCase().contains(text)) mPosts.add(post);
+                    if(post.getTitle().toLowerCase().contains(text.toLowerCase()) || post.getDesc().toLowerCase().contains(text.toLowerCase())) mPosts.add(post);
                 }
             }
         }
