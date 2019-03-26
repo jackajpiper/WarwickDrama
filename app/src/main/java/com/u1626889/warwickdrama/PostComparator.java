@@ -12,32 +12,42 @@ public class PostComparator implements java.util.Comparator<Post>{
 
     private Context context;
     private List<Post> posts;
-    private ArrayList<Integer> savedArr;
-    private String corpus;
-    private StringBuilder savedCorpus;
+    private ArrayList<String> corpus;
     private String tags;
+    private String combinedTags;
 
     public PostComparator(Context context, List<Post> newposts) {
         this.context = context;
         posts = newposts;
+        corpus = new ArrayList<>();
 //        Log.d("thing","Forming corpus");
-        StringBuilder corpusBuilder = new StringBuilder();
+
+        SharedPreferences savedPrefs = context.getSharedPreferences("savedPosts",0);
+        String savedIds = savedPrefs.getString("savedPosts","");
+        ArrayList<String> savedArr = new ArrayList<>(Arrays.asList(savedIds.split(",")));
+
+//        StringBuilder corpusBuilder = new StringBuilder();
         for(int i = 0; i < posts.size(); i++) {
-            corpusBuilder.append(posts.get(i).getDesc()).append(" ").append(posts.get(i).getTitle()).append(" ");
+//            corpusBuilder.append(posts.get(i).getDesc()).append(" ").append(posts.get(i).getTitle()).append(" ");
+            corpus.add(stemSentence(posts.get(i).getTitle()+posts.get(i).getDesc()));
+//            If the post is a saved post, add its tags to the list of combined tags
+            if(savedArr.contains(Integer.toString(posts.get(i).getId()))) combinedTags += " "+posts.get(i).getTags();
         }
-        corpus = corpusBuilder.toString();
-        corpus = stemSentence(corpus.substring(0,corpus.length()-1));
+//        String corpusStr = corpusBuilder.toString();
+//        corpusStr = stemSentence(corpusStr.substring(0,corpusStr.length()-1));
+//        corpus.add(corpusStr);
 
         SharedPreferences prefs = context.getSharedPreferences("user_tags",0);
         String tags = prefs.getString("user_tags","").toLowerCase();
         tags = stemSentence(tags);
         this.tags = tags;
-
-//        SharedPreferences savedPrefs = context.getSharedPreferences("savedPosts",0);
-//        String savedIds = savedPrefs.getString("savedPosts","");
+        Log.d("thing","combined tags are: "+combinedTags);
+        combinedTags = tags+" "+stemSentence(combinedTags);
+        Log.d("thing", "COMBINED TAGS ARE "+combinedTags);
+//
 //        ArrayList<String> savedArrStr = new ArrayList<>(Arrays.asList(savedIds.split(",")));
 //        Log.d("thing","str is "+savedIds);
-//        savedArr = new ArrayList<>();
+//        ArrayList<Integer> savedArr = new ArrayList<>();
 //
 //        if(!savedIds.equals("")) {
 //            for(int i =0; i<savedArrStr.size(); i++) {
@@ -45,21 +55,8 @@ public class PostComparator implements java.util.Comparator<Post>{
 //            }
 //        }
 //        ArrayList<String> savedStrings = new ArrayList<>();
-////        for(int i=0; i<savedArr.size(); i++) {
-////            if(s)
-////        }
-//
-//        savedCorpus = new StringBuilder();
 //        for(int i=0; i<savedArr.size(); i++) {
-//
-//            for(int n=0; n<posts.size(); n++) {
-//                if(posts.get(n).getId() == savedArr.get(i)); {
-//
-//                    savedCorpus.append(posts.get(n).getDesc());
-//
-//                }
-//            }
-//
+//            if(s)
 //        }
 
 
@@ -83,23 +80,20 @@ public class PostComparator implements java.util.Comparator<Post>{
 
 //        Calculates the tf-idf score between a post and the corpus
 //        That is, find the tf-idf score of a particular tag, and sum them
-        double tfIdf1 = calculateTfIdf(corpus,post1Text,tags);
-        double tfIdf2 = calculateTfIdf(corpus, post2Text, tags);
+        double tfIdf1 = calculateTfIdf(corpus,post1Text,combinedTags);
+        double tfIdf2 = calculateTfIdf(corpus, post2Text, combinedTags);
 
         String post1tags = post1.getTags().toLowerCase();
         String post2tags = post2.getTags().toLowerCase();
-        int tagMatch1 = tagsCompare(post1tags, tags);
-        int tagMatch2 = tagsCompare(post2tags, tags);
+        int tagMatch1 = tagsCompare(post1tags, combinedTags);
+        int tagMatch2 = tagsCompare(post2tags, combinedTags);
 
-        int savedAddition1 = 0;
-        int savedAddition2 = 0;
-//        if(savedArr.contains(post1.getId())) savedAddition1+=500;
-//        if(savedArr.contains(post2.getId())) savedAddition2+=500;
 
 //        Total is weighted cos tfIdf yields like 5 times smaller numbers
 //        TODO: I didn't have total2's tag match *5 before, does it change how the algorithm behaves?
-        double total1 = tagMatch1+(tfIdf1*5)+savedAddition1;
-        double total2 = tagMatch2+(tfIdf2*5)+savedAddition2;
+        double total1 = tagMatch1+(tfIdf1*5);
+        double total2 = tagMatch2+(tfIdf2*5);
+        Log.d("thing",tagMatch1 + " vs "+tfIdf1);
 //        Log.d("thing","post1 score "+savedAddition1+", post2 score "+savedAddition2);
 //        Log.d("thing","second saved id is "+savedArr.toArray());
 
@@ -111,8 +105,8 @@ public class PostComparator implements java.util.Comparator<Post>{
         }
     }
 
-    public double calculateTfIdf(String corpusStr, String documentStr, String termsStr) {
-        ArrayList<String> corpus = new ArrayList<>(Arrays.asList(corpusStr.split(" ")));
+    public double calculateTfIdf(ArrayList<String> corpus, String documentStr, String termsStr) {
+//        ArrayList<String> corpus = new ArrayList<>(Arrays.asList(corpusStr.split(" ")));
         ArrayList<String> document = new ArrayList<>(Arrays.asList(documentStr.split(" ")));
         ArrayList<String> terms = new ArrayList<>(Arrays.asList(termsStr.split(" ")));
         double total = 0.0;
@@ -127,7 +121,7 @@ public class PostComparator implements java.util.Comparator<Post>{
             // Finds the number of times the term is in the whole document corpus
             double idf = 0.0;
             for(int i = 0; i < corpus.size(); i++) {
-                if(corpus.get(i).equalsIgnoreCase(terms.get(n))) idf++;
+                if(corpus.get(i).contains(terms.get(n))) idf++;
             }
 
             idf = Math.log(corpus.size()/idf);
@@ -154,6 +148,8 @@ public class PostComparator implements java.util.Comparator<Post>{
     }
 
     public String stemSentence(String text) {
+
+        if(text==null) return "";
 
         // make it lower case
         text = text.toLowerCase();
